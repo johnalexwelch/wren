@@ -1,0 +1,39 @@
+{
+  "schema_version": "1",
+  "cora_template": "v1",
+  "name": "wren",
+  "type": "claude-agent",
+  "ci_provider": "github",
+  "memory_layout": {
+    "in_repo": "memory/README.md describes schema; subdirectories are agent-specific",
+    "session": "~/.claude/projects/<path>/memory/MEMORY.md managed by Claude Code auto-memory"
+  },
+
+  "required_files": [
+    "CLAUDE.md",
+    "CONTEXT.md",
+    "README.md",
+    ".pre-commit-config.yaml",
+    "memory/README.md",
+    "docs/decision-log.md",
+    "docs/adr/.gitkeep",
+    "docs/roadmap.md"
+  ],
+  "pre_commit_hooks": [
+    "pre-commit-hooks:check-yaml",
+    "pre-commit-hooks:check-added-large-files",
+    "pre-commit-hooks:end-of-file-fixer",
+    "pre-commit-hooks:trailing-whitespace",
+    "pre-commit-hooks:check-merge-conflict",
+    "local:branch-gate (no commits to main)",
+    "conventional-pre-commit:commit-msg"
+  ],
+
+  "ci_workflows": {
+    "github": [
+      ".github/workflows/claude-review.yml"
+    ]
+  }
+
+
+}

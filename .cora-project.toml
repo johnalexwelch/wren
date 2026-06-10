@@ -1,0 +1,13 @@
+[project]
+name = "wren"
+slug = "wren"
+description = "Worldbuilding, Research, Exploration & Narrative — creative writing and DnD partner"
+template_version = "0.0.0"
+modules = ["base", "agent-ci-lite", "agent-memory", "agent-manifest"]
+
+[project.variables]
+entry_point_shape = "cli"
+
+
+[drift]
+allow = []
