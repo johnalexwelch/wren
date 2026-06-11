@@ -18,7 +18,7 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
 
 ## Workflow
 
-1. **Anchor in where things stand.** If campaign files exist, read `CAMPAIGN_MAP.md` first (it points to canon), then pull what's live: recent session notes, `TIMELINE.md`, `OPEN_THREADS.md`, `PLAYER_KNOWLEDGE.md`, and the relevant `npcs/**`, `factions/**`, `locations/**`. Capture two things explicitly: **what changed last session**, and **what the players said they'd do next.** If a designed situation exists (from `dnd-adventure-design`), start from it. Don't re-read the whole archive.
+1. **Anchor in where things stand.** If campaign files exist, read the Campaign Dashboard first (`{Campaign Name} - Campaign Dashboard.md` for CotU; generic fallback `CAMPAIGN_MAP.md`) — it points to all live resources. Then pull what's active: recent session notes, `TIMELINE.md`, `OPEN_THREADS.md`, `PLAYER_KNOWLEDGE.md`, and the relevant `npcs/**`, `factions/**`, `locations/**`. Capture two things explicitly: **what changed last session**, and **what the players said they'd do next.** If a designed situation exists (from `dnd-adventure-design`), start from it. Don't re-read the whole archive.
 
 2. **Set one clear session goal.** Players need to know what they're trying to accomplish, and so do you. Make it achievable, understandable, and measurable — "stop the ritual before the full moon," not "deal with the cult somehow." This anchors pacing: when play drifts, the goal tells you what to reassert.
 

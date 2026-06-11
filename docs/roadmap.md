@@ -20,9 +20,9 @@
 
 ## Next
 
-- Decision log — begin logging creative decisions as sessions accumulate
-- `dnd-player-facing-writer` skill — create in-world documents (letters, decrees, wanted posters, prophecies) in the correct voice and format; feeds `12 Player-Facing Packet/`
-- dnd-continuity-check / dnd-session-prep — note Campaign Dashboard as CotU entry point (cosmetic; CONTEXT.md compensates for now)
+- Decision log — ✓ `dnd-decision-log` skill; vault Decision Log files already existed for both campaigns
+- `dnd-player-facing-writer` skill — ✓ in-world documents (letters, decrees, wanted posters, prophecies) with era-specific voices and GM-annotated source versions
+- dnd-continuity-check / dnd-session-prep — ✓ Campaign Dashboard as CotU entry point; Story So Far and Decision Log.md noted
 
 ## Later
 
