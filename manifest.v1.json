@@ -2,6 +2,7 @@
   "schema_version": "1",
   "cora_template": "v1",
   "name": "wren",
+  "full_name": "Wonder, Research, Exploration & Narrative",
   "type": "claude-agent",
   "ci_provider": "github",
   "memory_layout": {
