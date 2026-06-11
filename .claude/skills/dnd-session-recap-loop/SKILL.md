@@ -131,7 +131,19 @@ Invoke `dnd-review threads` on the updated session state. Classify active thread
 
 ---
 
-### 8. Stack-rank open decisions
+### 8. Update OPEN_QUESTIONS.md *(Echos of Eternity only)*
+
+If this is an Echos session, do a pass on `OPEN_QUESTIONS.md` — the companion doc for worldbuilding TBDs, stub fronts, and continuity fixes (distinct from OPEN_THREADS.md which tracks plot threads).
+
+- **Add**: any worldbuilding gaps surfaced this session — underdefined NPC histories, unexplained world mechanics, canon contradictions flagged by continuity check
+- **Close**: any OPEN_QUESTIONS items that got answered in play — explicitly note what was locked and where it was written
+- **Escalate**: any item that's now session-blocking (a question the party is about to ask that doesn't have a canon answer yet) → move to Tier 1 in the open decisions ranking
+
+Update the file after user acceptance.
+
+---
+
+### 9. Stack-rank open decisions
 
 Gather all TBD items across session notes, NPC docs, and front docs. Rank by unlock value:
 
@@ -146,7 +158,7 @@ Output the ranked table and update OPEN_THREADS.md → *Open Canon to Resolve*.
 
 ---
 
-### 9. Queue next session's opening beats
+### 10. Queue next session's opening beats
 
 Identify 1–3 things that should fire at the top of the next session:
 
