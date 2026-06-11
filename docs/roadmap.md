@@ -24,7 +24,14 @@
 - `dnd-player-facing-writer` skill — ✓ in-world documents (letters, decrees, wanted posters, prophecies) with era-specific voices and GM-annotated source versions
 - dnd-continuity-check / dnd-session-prep — ✓ Campaign Dashboard as CotU entry point; Story So Far and Decision Log.md noted
 
+## Done (skills audit 2026-06-11)
+
+- `dnd-pc-arc-builder` — map PC backstory hooks to active fronts, schedule spotlight beats
+- `dnd-location-builder` — Alexandrian-prep location design (zones, secrets, faction presence, timeline)
+- `dnd-rumor-table` — calibrated in-world intelligence, tiered by access, Three Clue Rule checked
+- `dnd-workflow` updated — Recap pipeline now routes to `dnd-faction-clock`; PC Arc, Location, Rumor Table pipelines added
+
 ## Later
 
-- Rowan integration — ingest worldbuilding artifacts and session recaps into the knowledge base
-- Mira integration — surface creative context in daily digest
+- Rowan integration — ingest worldbuilding artifacts and session recaps into the knowledge base (deferred; Rowan is an empty scaffold)
+- Mira integration — surface creative context in daily digest (deferred; no DnD content in work briefing for now)
