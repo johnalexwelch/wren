@@ -15,8 +15,8 @@
 
 ## Now
 
-- Campaign memory snapshots — lightweight `memory/` summaries of active campaign state (party, threads, NPC roster) so Wren can orient quickly without reading the full vault each session
-- Children of the Ashen Sky — `OPEN_THREADS.md` does not yet exist; create and populate from `Storylines & Fronts/`
+- Campaign memory snapshots — ✓ `memory/campaigns/ashen-sky-state.md`, `memory/campaigns/echos-state.md`, `memory/world/cotu-quick-ref.md` written
+- Children of the Ashen Sky — ✓ `OPEN_THREADS.md` created in vault from Story So Far threads
 
 ## Next
 
