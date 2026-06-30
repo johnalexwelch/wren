@@ -15,7 +15,7 @@ Consumes: actual play data (from user, session transcripts, memory system), prio
 Produces: completed post-session session note, updated OPEN_THREADS.md, ranked open-decisions table, S+1 opening queue
 Requires: knowledge of what actually happened at the table
 Side effects: writes/updates session note, OPEN_THREADS.md; may update front docs and NPC notes after acceptance
-Human gates: user confirms actual play before writing; user approves thread status changes and open-decision ranking
+Human gates: user confirms actual play before writing; Pass C faction agenda work is HITL ideation (never filled solo); user approves thread status changes and open-decision ranking
 
 ## Soft Context
 
@@ -36,6 +36,8 @@ Retrieve what happened at the table. In order of preference:
 4. Prep doc "Moments" fragment notes
 
 Confirm with the user before writing. If the account is incomplete, ask for the missing pieces specifically — don't guess.
+
+**Name reconciliation (transcripts garble proper nouns):** before treating any name as a new entity, reconcile it against `08 Rules & GM Tools/Name Reconciliation.md` and each candidate note's `aliases:` frontmatter. Clean spelling variants resolve automatically via aliases. For Bucket-2 garbles (e.g. "Helios"→[[Halios Swiftshadow]], "half-orc"/"Valar Gûr"→[[Veylar Auric]]), assume canon only when the role matches and **flag for confirmation — never substitute silently**. Never re-race or rename a built NPC from a transcript.
 
 Key things to pin down:
 - What scenes played vs. were skipped
@@ -75,29 +77,37 @@ Required sections:
 
 ### 4. NPC interaction loop *(do not skip)*
 
-Loop through every NPC who was active this session — on-screen AND off-screen. For each:
+Loop through every NPC who was active this session — on-screen AND off-screen. Three passes:
 
-**Party ↔ NPC (on-screen):**
+**Pass A — Party ↔ NPC (on-screen):**
 - What was the interaction?
 - How did it shift the relationship?
 
-**NPC ↔ NPC (off-screen):**
+**Pass B — NPC ↔ NPC (off-screen):**
 - What were key NPCs doing while the party wasn't watching?
 - Did any off-screen interaction shift a relationship, advance a faction, or change available information?
 
-Format as two tables in the session note:
+**Pass C — Faction agenda work *(HITL ideation — do not fill in solo)*:**
+
+This pass is a **collaborative conversation with the GM**, not an inference exercise. Present each active front one at a time. For each, open the ideation space: what is this faction working on, what's their angle, and how does it connect to what other factions are doing? The GM drives the creative decisions; your role is to prompt, push back, surface connections, and help weave storylines together.
+
+Do not pre-fill the table. Do not infer. Bring the front, ask the question, and build the answer together.
+
+**For each active front, ask:**
+1. *What are they working on right now, independent of the party?* (Surface their stated agenda from their front doc, then ask what that looks like *this session* specifically.)
+2. *What concrete action did they take toward that goal?* (Push for specificity — "Keld seeded 3 beads in the Vigil officer corps" not "Keld continued operations.")
+3. *Does this intersect with anything another front is doing?* (This is where storylines weave — Keld's sleeper seeding might cross Vespera's archive operation; Fawks's counter-intelligence might be watching Oswald's cover story.)
+4. *What does the GM commit to as the consequence if this goes unaddressed?* (The committed consequence is what makes the world feel alive — it shows up whether or not the party ever learns about it.)
+
+Cover every active front regardless of alignment — antagonist, ally, neutral, brewing. Ally fronts (Fawks, Coffin Hunters, Mirael) have their own operations in other parts of the theater and should advance even when the party isn't watching them.
+
+Once the GM has confirmed each entry, write the table:
 
 ```md
-**Party ↔ NPC**
-| NPC | Interaction | Relationship shift |
-|-----|-------------|-------------------|
-
-**NPC ↔ NPC (off-screen)**
-| Between | What happened | Relationship state / shift |
-|---------|---------------|---------------------------|
+**Faction Agenda Work (all fronts — independent of party)**
+| Front / Faction | Alignment | Working toward | Action taken this session | Committed consequence if unaddressed |
+|-----------------|-----------|----------------|--------------------------|--------------------------------------|
 ```
-
-Do not limit to NPCs the party spoke to. Every active NPC should appear.
 
 ---
 
@@ -201,6 +211,7 @@ Critical: {n} · High: {n} · Medium: {n}
 ## Rules
 
 - Never skip the NPC interaction loop. Off-screen NPC activity is as important as on-screen.
+- Never skip Pass C (faction agenda work). Inference is not enough — commit to what each active faction *did* this session toward their goal. Vague status notes ("continued operations") are not entries.
 - Never skip the front movement review. Every active front gets a row, even if the entry is "no movement."
 - Do not write the session note until actual play is confirmed by the user.
 - Lock open canon items that are confirmed; carry forward items that are not — never guess.

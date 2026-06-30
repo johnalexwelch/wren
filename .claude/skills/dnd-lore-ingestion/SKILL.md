@@ -26,6 +26,8 @@ Pairs well with: dnd-grill (ideas to ingest), dnd-grill (canon mode) (canon-chec
 
 ### 1. Separate material by certainty
 
+**First, reconcile names.** Transcripts and rough notes garble proper nouns. Before classifying anything as a new entity, check it against `08 Rules & GM Tools/Name Reconciliation.md` and existing notes' `aliases:` frontmatter. Clean spelling variants are the same entity (resolve via aliases). Bucket-2 garbles (e.g. "half-orc"/"Valar Gûr"→[[Veylar Auric]]) are flagged for confirmation, **never substituted silently** — do not create a new entity or alter an existing one's race/details from transcript noise.
+
 Classify every extracted claim:
 
 | Category | Meaning |
