@@ -1,7 +1,7 @@
 ---
 campaign: Echos of Eternity
-updated: 2026-06-11
-current_session: 82
+updated: 2026-06-14
+current_session: 83
 ---
 
 # Echos of Eternity — Active State
@@ -21,25 +21,25 @@ current_session: 82
 ## Where Things Stand
 
 **Location:** The Mile-End inn, Liminal Borgo, Elendar.  
-**In-game date:** Day 1 of the **Festival of the Sealed Doors** (8-day countdown). Day 2 morning is next.  
-**What just happened (S082):** Oswald D'emon revealed himself at the Long Wake and gave the party their first real lead — **Veylar Auric**, a corrupted Crimson Storm officer who knows whose Whisperglass stone they hold. Festival carousing followed; the whole group got numb on Sandkheg's Hide; Raine went full ragdoll. Session ended at the Mile-End with Brogan telling his leg story. The party noticed the carved raven mark on the doorpost — the inn has been an Ebon Veil safe haven the whole time.
+**In-game date:** Day 2 of the **Festival of the Sealed Doors** (8-day countdown). Session 083 opens in the morning at the Mile-End.  
+**What just happened (S082):** Oswald D'emon revealed himself at the Long Wake and gave the party their first real lead — **Veylar Auric**, a corrupted Crimson Storm officer who knows whose Whisperglass stone they hold. Festival carousing followed; the whole group got numb on Sandkheg's Hide; Raine went full ragdoll. The party returned to the Mile-End, heard Brogan's Ninth-Drink Version of how he lost his leg, and noticed the carved raven mark on the doorpost — the inn has been an Ebon Veil safe haven the whole time.
 
 ## Active Threads (top priority)
 
 - **Veylar Auric** — First lead. Senior Crimson Storm officer. Knows whose Whisperglass stone the party holds. His Bond-Sense will detect the stone at 60 ft. Resupply window is the approach.
-- **Whisperglass stone / find Halios Swiftshadow** — The stone whispers louder as they approach the owner. Owner is Halios; he arrives Day 2–3. Whispers will peak when he enters the city.
-- **Sealed Doors / Azteroth clock** — 8-day festival countdown. Day 8 = four generals + four soul-fragments at the arch beneath the Forum plaza = Azteroth's release. Il Tornja arrives Day 2–3.
+- **Whisperglass stone / find Halios Swiftshadow** — The stone whispers louder as they approach the owner. Owner is Halios; he arrives Day 3. Whispers point south on Day 2 and peak when he enters the city.
+- **Sealed Doors / Azteroth clock** — 8-day festival countdown. Day 8 = four generals + four soul-fragments at the arch beneath the Forum plaza = Azteroth's release. Il Tornja arrives Day 3.
 
 ## Ready for Payoff
 
-- **Carved raven mark on the Mile-End doorpost** — Party now knows the Ebon Veil symbol. Let a player notice the carved mark on the doorpost in S083 opening. Brogan doesn't explain unless asked.
-- **Brogan's leg story** — Ended mid-telling in S082. Finish in first 15 minutes of S083 over breakfast.
+- **Veylar's Day 2 resupply window** — Today is the last clean chance to identify Halios before Il Tornja's arrival locks the city down.
+- **Henry / Loach at the Necropolis edge** — If the party reaches the South Gate, Henry can see Loach and choose between chasing his personal thread now or preserving the Veylar window.
 
 ## Brewing (offscreen)
 
-- **Il Tornja inbound** — Arrives Day 2–3. His arrival changes the city's political energy.
+- **Il Tornja inbound** — Arrives Day 3. His arrival changes the city's political energy.
 - **Oswald's double game** — Court still trusts Oswald. Deception holds for now.
-- **Halios inbound** — Arrives with Il Tornja Day 2–3; whispers will escalate naturally.
+- **Halios inbound** — Arrives with Il Tornja Day 3; whispers will escalate naturally.
 - **Keld's illegal Vigil bonds (broader)** — Veylar is one case; Halios is the devastating case. Together = proof of systematic illegal expansion.
 
 ## Deferred Spotlights

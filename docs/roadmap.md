@@ -33,5 +33,6 @@
 
 ## Later
 
+- `midjourney-prompt` skill — generate Midjourney v7 prompts for characters / NPCs / tokens / locations / items / scenes / heraldry, register-tuned to Avalor (Ashen Sky arcanopunk) vs. Elendar (Echos Byzantine-martial). Pulls canon from vault NPC/location files, offers numbered variants (token 1:1, portrait 2:3, splash 16:9), optional write to `15 Art Prompts/` and sync into the NPC's existing `Generative AI Prompt` block. Pairs with `dnd-player-facing-writer` (wanted-poster text + suspect portrait) and `dnd-location-builder` (location splash). Draft v1 explored 2026-06-23, removed pending design pass.
 - Rowan integration — ingest worldbuilding artifacts and session recaps into the knowledge base (deferred; Rowan is an empty scaffold)
 - Mira integration — surface creative context in daily digest (deferred; no DnD content in work briefing for now)
