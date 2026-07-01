@@ -13,18 +13,40 @@ Turn a settled direction — a designed situation, a campaign in motion, or "we 
 Two schools drive this skill. **The Angry GM** — make players *care*: investment, stakes, consequences, meaningful decisions, clear narration (full reference in `references/angry-gm-principles.md`). **DM David** — run it *smoothly*: prepare secrets/clues/leads not scenes, prep only what's needed, delegate, keep momentum, manage spotlight and pacing (full reference in `references/dm-david-principles.md`). Read whichever you need the reasoning from; the workflow below is enough to run.
 
 ## The two questions that govern prep
+
 - **Prepare what you'll actually use.** Players only ever experience what reaches the table, and the DM is usually the slowest part of it. Prep the *likely* next content — the situations, NPCs, and locations they'll probably hit — not six sessions of contingency. The best input here is what the players said they'd do at the end of last session; if you don't have it, infer the two or three most probable directions and prep those.
 - **Prepare situations, not encounters.** A situation survives player choice; a scripted encounter shatters the moment they negotiate, sneak, or invent something. Frame every prepped beat as a situation with goals and pressures the players can engage any way they like — not a fixed event that must play out.
 
 ## Workflow
 
-1. **Anchor in where things stand.** If campaign files exist, read the Campaign Dashboard first (`{Campaign Name} - Campaign Dashboard.md` for CotU; generic fallback `CAMPAIGN_MAP.md`) — it points to all live resources. Then pull what's active: recent session notes, `TIMELINE.md`, `OPEN_THREADS.md`, `PLAYER_KNOWLEDGE.md`, and the relevant `npcs/**`, `factions/**`, `locations/**`. Capture two things explicitly: **what changed last session**, and **what the players said they'd do next.** If a designed situation exists (from `dnd-adventure-design`), start from it. Don't re-read the whole archive.
+1. **Anchor in where things stand.** Load context in this order — budget matters, so stop when you have enough:
+
+   **Tier 1 — always read (< 5K tokens target):**
+   - Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md` for CotU campaigns; fallback `CAMPAIGN_MAP.md`) — points to all live resources
+   - Last 1–2 session notes — what actually happened at the table
+   - `OPEN_THREADS.md` — top active threads
+
+   **Tier 2 — filtered reads (read only the relevant slice, not the full file):**
+   - `Decision Log.md` — settled decisions only. **Filter strategy (in order):**
+     1. If Decision Log uses status markers, grep for `LOCKED` or `status: locked` — load matching entries
+     2. If no status markers (e.g. Decision Log uses numbered `### DECISION N` headers), grep for NPC/location/faction names from active threads + OPEN_THREADS — load matching entries plus most recent 10–15 entries
+     3. Fallback: load last ~500 lines of the file (most recent decisions)
+     Always load before anything else in Tier 2 — this is the primary guard against re-litigating settled decisions.
+   - **Narrative arc summary** — in order of preference: (a) `Story So Far.md` most recent arc chapter if the file exists; (b) if it doesn’t, read the Front Movement tables from the last 2–3 session notes (shows what’s moved recently); (c) Campaign Dashboard “Current Focus” or “Active Arc” section as minimal orientation. If none exist and campaign is >20 sessions, flag it in the prep output.
+   - `Storylines & Fronts/` — **active fronts only.** Detection in order: (1) skip files with `(TBD)` in filename; (2) for remaining files check frontmatter `status:` field — load `active`/`in-progress`, skip `dormant`/`tbd`/`parked`; (3) fallback: load any front that appears in the last 2–3 sessions’ Front Movement table. For each active front: what’s their next scheduled beat, what are they doing right now independent of the party?
+   - `PLAYER_KNOWLEDGE.md` (if it exists — created/updated by `dnd-player-knowledge-sync` after each session) — what the players actually know vs. what exists only in GM notes
+   - Relevant `NPCs/`, `Factions/`, `Locations/` files for the threads you're actively prepping
+
+   **Tier 3 — deep context (continuity checks, NPC web work, councils — not standard session prep):**
+   - Full Decision Log, full session archive, graphify output
+
+   Capture two things explicitly: **what changed last session**, and **what the players said they'd do next.** If a designed situation exists (from `dnd-adventure-design`), start from it. Don't re-read the whole archive.
 
 2. **Set one clear session goal.** Players need to know what they're trying to accomplish, and so do you. Make it achievable, understandable, and measurable — "stop the ritual before the full moon," not "deal with the cult somehow." This anchors pacing: when play drifts, the goal tells you what to reassert.
 
 3. **Name the investment, and put it in the room.** State why *this* party cares right now — the emotional anchor (an NPC they love, a place they've bled for, a personal stake). Make the anchor *present and active* this session, not a quest-giver behind a desk: let the party see the frightened person, the empty cot, the threatened place, early. If the upcoming material has none, build one in — a named, vulnerable person tied to this session's problem and on the same clock beats any lore. Note one personal thread per PC so the investment isn't carried by a single character. Investment is the difference between players making choices and players spectating.
 
-4. **Lay out secrets, clues, and leads.** List the **secrets** (truths in the world relevant this session), the **clues** that let players uncover each (with the Three Clue Rule in mind — no single point of failure), and the **leads** that point them onward so they're never stranded without a next move. Players assemble the sequence; you supply the information. Mind the line between **public belief** and **GM truth**: check what the party already knows (`PLAYER_KNOWLEDGE.md` if it exists) so a clue advances them rather than restating what they have — or accidentally handing over a secret they haven't earned.
+4. **Lay out secrets, clues, and leads.** List the **secrets** (truths in the world relevant this session), the **clues** that let players uncover each (with the Three Clue Rule in mind — no single point of failure), and the **leads** that point them onward so they're never stranded without a next move. Players assemble the sequence; you supply the information. Mind the line between **public belief** and **GM truth**: check `PLAYER_KNOWLEDGE.md` (if it exists — maintained by `dnd-player-knowledge-sync`) so a clue advances them rather than restating what they already have — or accidentally handing over a secret they haven't earned. If `PLAYER_KNOWLEDGE.md` doesn't exist yet, infer from session notes what the players have seen and heard.
 
 5. **Advance the clocks.** Note every **active timer** moving this session — villain plans, faction maneuvers, rituals, political events — and where each stands. The world changes whether or not the players act; surface that pressure so their choices carry weight and urgency.
 
@@ -38,9 +60,10 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
 
 10. **Prep narration for the key scenes.** For the two or three beats that matter most, prep *actionable* description, not mood-poetry: what exists, what matters, and what players can interact with ("three stone altars, one slick with fresh blood" — not "an old, mysterious room"). Visualize the space first so positions and objects stay consistent. At the table, run resolution as **Declare → Determine → Describe**: the player states an action, you resolve it, you narrate the result — clean and in order.
 
-11. **Close the loop.** End the prep with the **consequences** that are queued: how the world will visibly shift depending on what the players do. After the session, update `TIMELINE.md` / `OPEN_THREADS.md` once outcomes are known (only after the DM confirms). For a final pre-table safety check, route to `dnd-review` (agency + continuity).
+11. **Close the loop.** End the prep with the **consequences** that are queued: how the world will visibly shift depending on what the players do. For a final pre-table safety check, route to `dnd-review` (agency + continuity). After the session runs, close it with `dnd-session-recap-loop` — that workflow includes the player knowledge boundary update (`dnd-player-knowledge-sync`) and faction clock advance.
 
 ## Output format
+
 Produce a runnable prep doc. Lead with the goal and what's live; keep beats as situations, not a script.
 
 ```md
@@ -85,4 +108,5 @@ Produce a runnable prep doc. Lead with the goal and what's live; keep beats as s
 ```
 
 ## Output rules
+
 Prep for *use*, not for show — favor what the players will probably touch over exhaustive coverage, and favor momentum over simulation detail. Keep every beat a situation that survives unexpected player choices; if you've written a fixed sequence of events, you've written a script, so turn it back into a situation with goals and pressures. Make stakes and risks explicit and visible. Protect player trust: consistent rulings, logical consequences, honest NPCs, no information hidden just to spring a "gotcha." Cite canon file paths when you lean on them, and never update campaign docs until the DM confirms outcomes.

@@ -1,7 +1,7 @@
 ---
 name: dnd-rumor-table
 model: sonnet
-description: "Generates a calibrated set of in-world rumors, overheard conversations, and street-level intelligence for a session — tiered by access, tagged to active fronts, and distinguished by truth value (true / partial / misleading / planted). Follows Three Clue Rule compliance: each rumor is a potential path toward a revelation. Use when session prep needs ambient intelligence for the party to discover through carousing, contacts, or investigation. Triggers on \"rumor table\", \"what's on the street\", \"what are people saying\", \"carousing results\", \"what does {NPC} know\", \"in-world intelligence for this session\", \"ambient info\"."
+description: Generates a calibrated set of in-world rumors, overheard conversations, and street-level intelligence for a session — tiered by access, tagged to active fronts, and distinguished by truth value (true / partial / misleading / planted). Follows Three Clue Rule compliance: each rumor is a potential path toward a revelation. Use when session prep needs ambient intelligence for the party to discover through carousing, contacts, or investigation. Triggers on "rumor table", "what's on the street", "what are people saying", "carousing results", "what does {NPC} know", "in-world intelligence for this session", "ambient info".
 metadata:
   codex-compatible: false
 ---
@@ -32,7 +32,6 @@ Pairs well with: dnd-session-prep (embed the rumor set in the session's intel la
 ### 1. Read the campaign state
 
 Pull what's active:
-
 1. OPEN_THREADS.md — what revelations are in play?
 2. Active front docs — what are factions doing right now?
 3. Recent session note — what did the party just learn? (Don't repeat known facts as rumors.)
@@ -58,19 +57,16 @@ Before generating, answer:
 Produce 8–12 rumors across three tiers:
 
 #### Tier 1 — Common (4–5 rumors)
-
 Freely available. Anyone might know this. Players get it from: overhearing conversation, asking a local, carousing casually.
 
 These are the ambient texture of the city/location. Some are true, some are garbled, some are faction-planted.
 
 #### Tier 2 — Informed (2–4 rumors)
-
 Requires a contact, a successful social roll, or deliberately seeking out someone in the know. A merchant's guild contact, an innkeeper with a loose tongue, a guard who's had a drink.
 
 These tend to be more specific and more useful — closer to real revelations.
 
 #### Tier 3 — Rare (2–3 rumors)
-
 Requires real effort: a specific NPC who trusts the party, an investigative action, a successful Insight check on the right person, a bribe. This is intelligence the party earns.
 
 These should be directly useful for an active revelation — the clue that unlocks a thread, the lead that names a person.
@@ -113,7 +109,6 @@ Every set should include at least one Planted rumor — factions shape the infor
 After generating, cross-reference against active revelations:
 
 For each revelation the session needs to be reachable:
-
 - How many rumor-paths now point toward it?
 - Is there at least one Tier 1 path (freely available) and one Tier 3 path (earned)?
 - Does the party already have enough without these?

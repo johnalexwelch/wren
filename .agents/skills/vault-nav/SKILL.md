@@ -111,20 +111,10 @@ Use graphify when grep isn't enough: tracing an NPC's full relationship web, fin
 ### Run graphify on the vault
 
 ```bash
-graphify extract "$VAULT" \
-  --out "/Users/alexwelch/Documents/Home/Areas/DnD/GM/.graphify/chronicles/full-vault"
+graphify "$VAULT" --output "$VAULT/graphify-out"
 ```
 
-Output must land outside the Obsidian vault so generated files do not pollute Obsidian's graph.
-
-For Children of the Ashen Sky only:
-
-```bash
-graphify extract "$VAULT/01 Campaigns/Children of the Ashen Sky" \
-  --out "/Users/alexwelch/Documents/Home/Areas/DnD/GM/.graphify/chronicles/children-of-the-ashen-sky"
-```
-
-If graph-first tooling needs a `graphify-out` path, pass the sidecar graph path explicitly rather than placing generated output in the vault.
+Output lands in `$VAULT/graphify-out/` — this is where `graph-first` detection finds it (matches the `world/graphify-out/` detection path).
 
 ### When to use graphify vs grep
 
@@ -138,10 +128,7 @@ If graph-first tooling needs a `graphify-out` path, pass the sidecar graph path 
 
 ### After running graphify
 
-Use the sidecar output directly:
-
-- Full vault: `/Users/alexwelch/Documents/Home/Areas/DnD/GM/.graphify/chronicles/full-vault/graphify-out/`
-- Children of the Ashen Sky: `/Users/alexwelch/Documents/Home/Areas/DnD/GM/.graphify/chronicles/children-of-the-ashen-sky/graphify-out/`
+Wren's existing skills (`worldbuilding-council`, `narrative-council`, `worldbuilding-deep-dive`, `character-arc`, `story-outline`) will automatically use the graph when invoked — graph-first detection finds `$VAULT/graphify-out/` and loads it. No extra steps needed.
 
 To force graph ingestion in any of those skills: pass `--graph` in the invocation.
 
@@ -167,5 +154,5 @@ find "$VAULT" -name "*.md" | xargs grep -l "^# House Vane" 2>/dev/null
 - Always read the Campaign Dashboard before diving into subdirectories.
 - Don't read the entire vault — pull only what the task needs.
 - For OPEN_THREADS.md, read the Active section first; Brewing/Dormant can wait.
-- Graphify is a one-time cost per session when needed — run it once, then reuse the sidecar output.
-- Never leave `graphify-out/` inside `$VAULT`. If one exists, move it to `/Users/alexwelch/Documents/Home/Areas/DnD/GM/.graphify/chronicles/...` before finishing.
+- Graphify is a one-time cost per session when needed — run it once, then all skills use it.
+- If graphify-out already exists in `$VAULT`, check its age before re-running: `ls -la "$VAULT/graphify-out/"`.
