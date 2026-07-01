@@ -20,7 +20,7 @@ Lightweight can be *lore-aware*: if a few relevant notes exist, use them as cons
 
 ## Workflow
 
-1. **Gather context (just enough).** Inspect likely sources if they exist — `CAMPAIGN_MAP.md` (read first; it says where canon lives), `CANON.md`, `CAMPAIGN_CONTEXT.md`, `OPEN_THREADS.md`, `TIMELINE.md`, `PLAYER_KNOWLEDGE.md`, and `campaigns/**`, `npcs/**`, `factions/**`, `locations/**`, `mysteries/**`, `lore/**`. Pull only what sharpens the next question; don't read the whole archive.
+1. **Gather context (just enough).** Inspect likely sources if they exist — Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md`; fallback `CAMPAIGN_MAP.md`), `Decision Log.md` (LOCKED entries — see `dnd-session-prep` Tier 2 filter strategy; do not look for `CANON.md`), `OPEN_THREADS.md`, `TIMELINE.md`, `PLAYER_KNOWLEDGE.md`, and relevant `npcs/**`, `factions/**`, `locations/**`, `mysteries/**`, `lore/**`. Pull only what sharpens the next question; don't read the whole archive.
 2. **Identify the object** (session premise, mystery, NPC, faction move, encounter, location, arc, lore decision) and its primary risks.
 3. **Establish the intended table experience** (tense investigation, political pressure, wonder, horror, tactical danger, emotional payoff, moral dilemma, etc.). If unclear, ask: "What table experience are you aiming for?"
 4. **Interrogate one branch at a time** (Lightweight) or **in batches of five** (Canon), each question in this format:
@@ -38,16 +38,17 @@ Lightweight can be *lore-aware*: if a few relevant notes exist, use them as cons
 
 Acceptance shorthand: `a`/`accept`/`yes`/`y` accepts the recommendation; treat it as settled, and record it with `decision-log` (question, decision, alternatives, tradeoffs). Reject → ask a resolving follow-up.
 
-5. **Always stress-test the D&D failure modes:** agency (real choices vs breadcrumbs), information (≥3 ways to learn crucial facts), motivation (why NPCs act now), consequence (what changes on failure/ignore), escalation, spotlight (which PCs have hooks), table usability, improvisation survival, and lore fit (what existing canon strengthens or contradicts this).
+1. **Always stress-test the D&D failure modes:** agency (real choices vs breadcrumbs), information (≥3 ways to learn crucial facts), motivation (why NPCs act now), consequence (what changes on failure/ignore), escalation, spotlight (which PCs have hooks), table usability, improvisation survival, and lore fit (what existing canon strengthens or contradicts this).
 
 ### Canon-mode extras
+
 - **Challenge canon language** immediately when a term conflicts with established usage (propaganda vs truth, public myth vs GM truth). Ask whether it's in-world framing or a canon change.
 - **Sharpen fuzzy terms** into canonical language ("cult" → "cell/order/devotional faction"; "magic problem" → "leyline instability/ritual contamination").
 - **Invent concrete table scenarios** that expose weak structure (players ignore the hook, accuse the wrong NPC, ally with the antagonist, solve the chain early, bypass with magic, fail publicly, kill/spare a key NPC).
-- **Update canon inline** in `CAMPAIGN_CONTEXT.md`/`CANON.md` only after acceptance — settled facts only, never brainstorm.
+- **Record settled decisions** via `dnd-decision-log` only after acceptance — settled facts only, never brainstorm. Do not write to `CANON.md` or `CAMPAIGN_CONTEXT.md` (neither exists; Decision Log is the source of truth).
 - **Offer a Campaign Decision Record** only when the change is hard to reverse, surprising-without-context, and has real trade-offs (e.g., "the Phoenix Heart is propaganda for the Titan's Heart"). Skip for tavern names, one-session NPCs, monster reskins, easily-moved clues.
 
-6. **Close with a revision summary:**
+1. **Close with a revision summary:**
 
 ```md
 # Revised Direction
@@ -59,4 +60,5 @@ Acceptance shorthand: `a`/`accept`/`yes`/`y` accepts the recommendation; treat i
 ```
 
 ## Output rules
+
 Be direct; don't flatter the idea. Recommend a path, don't stay neutral. Cite file paths when referencing canon; never overwrite canon without acceptance; never invent canon when docs are silent (mark proposals). Prefer concrete table-facing fixes and campaign-specific language over generic fantasy filler. Keep DM table-usability in view. Preserve player agency.
