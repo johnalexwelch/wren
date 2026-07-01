@@ -97,6 +97,14 @@ After approval, update `OPEN_THREADS.md` using:
 ## Retired
 ```
 
+**Entry format within each section** (canonical — all skills writing to OPEN_THREADS.md must use this):
+
+```md
+- **{Thread name}** · Status: {Active/Brewing/Dormant/Ready/Retired} · What party knows: {player-visible summary} · GM truth: {actual situation} · Recommended action: {next move} · Risk if ignored: {consequence} · See: `[[wiki link]]`
+```
+
+This format is defined here as the owning skill. Any other skill updating OPEN_THREADS.md must match this structure or route updates through this skill.
+
 ## Rules
 
 - Do not force every thread into the next session.

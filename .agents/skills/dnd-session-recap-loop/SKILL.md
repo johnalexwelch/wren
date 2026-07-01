@@ -229,6 +229,11 @@ Critical: {n} · High: {n} · Medium: {n}
 1. ...
 2. ...
 
+## OPEN_QUESTIONS Update (Step 8 — Echos campaigns only)
+- Added: {n items}
+- Closed: {n items}
+- Escalated to session-blocking: {n items}
+
 ## Player Knowledge Update (Step 11)
 - Updated: PLAYER_KNOWLEDGE.md
 - Extracted: {n NPCs, n locations, n confirmed facts, n rumors, n secrets}

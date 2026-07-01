@@ -121,6 +121,7 @@ File lives at `{Campaign folder}/PLAYER_KNOWLEDGE.md`. Use append-only updates �
 
 ## Output rules
 
+- **Show before writing.** After completing the extraction pass, present the full set of extracted entries to the user for review before appending to `PLAYER_KNOWLEDGE.md`. This is especially important for ambiguous reveals marked `[UNCLEAR]`. If called from `dnd-session-recap-loop` (where actual play is already confirmed), a brief review is sufficient — don’t re-confirm each item, just surface [UNCLEAR] flags and wait for a single approval.
 - **Player POV only.** Never write GM-truth into PLAYER_KNOWLEDGE.md. If a section requires distinguishing "what they know" from "what's actually true," only write the player-visible version in this file.
 - **Append, never overwrite.** Earlier entries are historical record. If something was wrong, add a `[REVISED S{n}]` note; don't delete.
 - **Flag gaps.** If the session note is ambiguous about whether something was revealed (GM described a detail but it wasn't clear players noticed), flag it with `[UNCLEAR — confirm with GM]` rather than making a call.
