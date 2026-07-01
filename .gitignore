@@ -1,5 +1,9 @@
 # _base
 .DS_Store
+
+# runtime agent state
+.omc/
+.pi/
 *.swp
 *.swo
 .env

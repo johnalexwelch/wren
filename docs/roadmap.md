@@ -24,6 +24,12 @@
 - `dnd-player-facing-writer` skill — ✓ in-world documents (letters, decrees, wanted posters, prophecies) with era-specific voices and GM-annotated source versions
 - dnd-continuity-check / dnd-session-prep — ✓ Campaign Dashboard as CotU entry point; Story So Far and Decision Log.md noted
 
+## Done (context-loading audit 2026-06-30)
+
+- `dnd-session-prep` — tiered context loading: Decision Log (LOCKED entries), Story So Far, Storylines & Fronts active fronts added as Tier 2 mandatory reads; PLAYER_KNOWLEDGE.md wired as Tier 2 source
+- `dnd-player-knowledge-sync` skill — post-session extractor: reads session note → appends player-visible info to `PLAYER_KNOWLEDGE.md` (NPCs met, facts learned, rumors, secrets revealed); wired into Recap pipeline in `dnd-workflow`
+- CANON.md proposal reviewed and rejected (Q4 decision-log) — tiered loading from authoritative sources preferred over manually-maintained summary
+
 ## Done (skills audit 2026-06-11)
 
 - `dnd-pc-arc-builder` — map PC backstory hooks to active fronts, schedule spotlight beats
@@ -33,5 +39,6 @@
 
 ## Later
 
+- `midjourney-prompt` skill — generate Midjourney v7 prompts for characters / NPCs / tokens / locations / items / scenes / heraldry, register-tuned to Avalor (Ashen Sky arcanopunk) vs. Elendar (Echos Byzantine-martial). Pulls canon from vault NPC/location files, offers numbered variants (token 1:1, portrait 2:3, splash 16:9), optional write to `15 Art Prompts/` and sync into the NPC's existing `Generative AI Prompt` block. Pairs with `dnd-player-facing-writer` (wanted-poster text + suspect portrait) and `dnd-location-builder` (location splash). Draft v1 explored 2026-06-23, removed pending design pass.
 - Rowan integration — ingest worldbuilding artifacts and session recaps into the knowledge base (deferred; Rowan is an empty scaffold)
 - Mira integration — surface creative context in daily digest (deferred; no DnD content in work briefing for now)
