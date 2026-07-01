@@ -6,12 +6,15 @@ codex-compatible: false
 ---
 
 ## Purpose
+
 Route D&D creative work through the right skills in the right order.
 
 ## Contract
+
 Consumes: user intent, campaign context clues. Produces: routed pipeline execution. Requires: at least one dnd-* skill installed. Side effects: delegates to downstream skills which may create/update campaign files. Human gates: confirm pipeline selection before starting.
 
 ## Pipeline detection
+
 | Signal | Pipeline |
 |--------|----------|
 | "prep a session", "next session", "what should happen next" | **Session** |
@@ -38,7 +41,7 @@ Entry points: step 1 for raw ideas, the canon-grill step if already grilled+logg
 
 **Ideation:** dnd-grill → decision-log → dnd-lore-ingestion → dnd-grill *canon mode*.
 
-**Recap:** dnd-session-recap-loop (full post-session close — actual play → NPC loop → front movement → continuity → threads → ranked decisions → next session queue) → dnd-faction-clock (advance all active factions one beat after session close).
+**Recap:** dnd-session-recap-loop (full post-session close — actual play → NPC loop → front movement → continuity → threads → ranked decisions → next session queue) → **dnd-player-knowledge-sync** (extract player-visible info → update `PLAYER_KNOWLEDGE.md`) → dnd-faction-clock (advance all active factions one beat after session close).
 
 **PC Arc:** dnd-pc-arc-builder (map backstory hooks → active fronts, build spotlight schedule) → character-arc (internal transformation, if not yet designed) → dnd-npc-arc-builder (if a backstory NPC needs a revelation arc) → dnd-session-prep (embed scheduled spotlight in prep).
 
@@ -53,4 +56,5 @@ Entry points: step 1 for raw ideas, the canon-grill step if already grilled+logg
 **Ad-hoc:** single-skill request → route directly, no pipeline.
 
 ## Execution rules
+
 Announce the pipeline and starting step. At each transition, summarize what was settled and what's next. Ensure accepted grill answers reach the decision log before moving on. Skip already-completed steps. Pause on blocking findings (Critical continuity issues, major agency failures) before continuing. Don't re-grill settled decisions. Prefer the lightest pipeline that covers the need; single-skill requests bypass routing.

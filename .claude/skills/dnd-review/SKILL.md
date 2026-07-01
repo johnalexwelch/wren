@@ -16,7 +16,7 @@ Catch problems before they reach the table. This skill handles shared setup (sco
 ## Shared steps (all modes)
 
 1. **Scope** what's under review: session, arc, lore doc, NPC, faction, mystery, handout, or encounter.
-2. **Retrieve source of truth** in order: `CAMPAIGN_MAP.md`, `CANON.md`, `CAMPAIGN_CONTEXT.md`, `TIMELINE.md`, `PLAYER_KNOWLEDGE.md`, `OPEN_THREADS.md`, relevant NPC/faction/location docs, recent session notes, decision records. Load only what exists.
+2. **Retrieve source of truth** in order: Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md`), `Decision Log.md` (LOCKED entries — see `dnd-session-prep` Tier 2 filter strategy for how to extract them), `PLAYER_KNOWLEDGE.md`, `OPEN_THREADS.md`, `TIMELINE.md`, relevant NPC/faction/location docs, recent session notes. Load only what exists. Do not look for `CANON.md` — it was rejected (Q4 decision-log); Decision Log is the source of truth for settled decisions.
 3. Dispatch to the mode(s) below. Only update docs after explicit acceptance.
 
 ---
