@@ -14,7 +14,7 @@ Run this after `dnd-session-recap-loop`, or independently when factions need to 
 
 ## Contract
 
-Consumes: session summary (what happened), active faction/org docs, front docs, OPEN_THREADS.md  
+Consumes: session summary (what happened), active faction/org docs, front docs, OPEN_THREADS.md, PLAYER_KNOWLEDGE.md (player-boundary guard), Decision Log LOCKED entries relevant to active factions
 Produces: faction advancement table, off-screen moves, new pressure points, updated thread entries  
 Requires: at minimum a session summary; richer output when faction docs are available  
 Side effects: may update faction docs and OPEN_THREADS.md after explicit acceptance  
@@ -24,14 +24,20 @@ Human gates: user approves off-screen moves and doc updates before writing
 
 ## Workflow
 
-### 1. Identify active factions
+### 1. Identify active factions and load context
 
 Pull every faction with a stake in the current arc. For CotU vault:
+
 - **Shared factions**: `05 Shared Factions & Organizations/`
 - **Campaign-specific orgs**: `01 Campaigns/{Campaign}/Organizations/`
 - **Fronts driving faction behavior**: `Storylines & Fronts/` (CotAS) or faction threads in `OPEN_THREADS.md` (Echos)
 
-A faction is *active* if it has an ongoing goal, a named agent in play, or a clock that's running. Dormant factions (no current agenda) get one line noting they didn't move; don't deep-analyze them.
+A faction is *active* if it has an ongoing goal, a named agent in play, or a clock that's running. Dormant factions (no current agenda) get one line noting they didn’t move; don’t deep-analyze them.
+
+**Load before advancing:**
+
+- `PLAYER_KNOWLEDGE.md` — what the players currently know vs. GM-only. Used in Step 3 to keep off-screen traces from leaking unrevealed secrets.
+- `Decision Log.md` (LOCKED entries relevant to these factions) — constraints that can’t be contradicted by faction moves. Use the filter strategy from `dnd-session-prep` Step 1 Tier 2.
 
 ---
 
@@ -43,6 +49,7 @@ Answer these questions per faction, drawing from the faction doc's Goals, Timeli
 State their active goal at session start.
 
 **What did they accomplish?**  
+
 - *On-screen*: actions the party observed directly  
 - *Off-screen*: actions that happened while the party was elsewhere — infer from their established methods, resources, and goals
 
@@ -67,6 +74,8 @@ Off-screen faction moves aren't invisible — they leave traces. For each signif
 - A resource that's been depleted or acquired
 
 These are hooks. The party can discover them through investigation, contact, or accident. Not every trace needs to be planted immediately — note which ones should surface in the next session vs. later.
+
+**Before writing any trace:** check `PLAYER_KNOWLEDGE.md`. If the trace would reveal something that hasn’t yet crossed the GM/player boundary (i.e., it’s GM-only information the party hasn’t earned), do one of: (a) defer the trace until the reveal is appropriate, noting `[NOT YET DISCOVERABLE — surfaces after {event}]`; (b) redesign the trace to show effect without revealing cause (players see *something changed*, not *why*). Also check: does this trace contradict a LOCKED Decision Log entry? If so, flag and don’t proceed without GM confirmation.
 
 ---
 

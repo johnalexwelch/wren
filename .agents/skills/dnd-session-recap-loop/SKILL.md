@@ -200,7 +200,7 @@ Invoke `dnd-player-knowledge-sync` on the completed session note. This extracts 
 
 If `PLAYER_KNOWLEDGE.md` doesn’t exist yet, follow the bootstrap path in `dnd-player-knowledge-sync` (extract last 2–3 sessions only; mark file as bootstrapped).
 
-**→ Pipeline continues:** after Step 11, invoke `dnd-faction-clock` to advance all active factions one beat. Do not stop at Step 11 if running the full Recap pipeline.
+**→ Pipeline continues:** `dnd-player-knowledge-sync` will hand off to `dnd-faction-clock` as its final step. Do not invoke faction-clock directly from here — it runs via the player-knowledge-sync handoff to avoid double-invocation.
 
 ---
 
@@ -228,6 +228,15 @@ Critical: {n} · High: {n} · Medium: {n}
 ## Next Session Opening Queue
 1. ...
 2. ...
+
+## Player Knowledge Update (Step 11)
+- Updated: PLAYER_KNOWLEDGE.md
+- Extracted: {n NPCs, n locations, n confirmed facts, n rumors, n secrets}
+- Flags: [BOOTSTRAPPED at S{n} / UNCLEAR items / DISCREPANCY in OPEN_THREADS / none]
+
+## Faction Advancement (via dnd-faction-clock)
+- {Front}: clock → beat {n} · next beat: {description}
+- (or: see faction-clock output doc)
 ```
 
 ---

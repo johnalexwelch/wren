@@ -19,7 +19,9 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
 
 ## Workflow
 
-1. **Anchor in where things stand.** Load context in this order — budget matters, so stop when you have enough:
+1. **Anchor in where things stand.** Load context in this order — budget matters:
+
+   **Budget rule:** Tier 1 files are mandatory even if they exceed 5K tokens — load them all, then skip Tier 2 unless explicitly needed. If Tier 1 exceeds 5K, note `[TIER 1 OVERRUN: {n}K tokens — Tier 2 skipped unless user requests it]` in Context Flags.
 
    **Tier 1 — always read (< 5K tokens target):**
    - Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md` for CotU campaigns; fallback `CAMPAIGN_MAP.md`) — points to all live resources
@@ -40,7 +42,7 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
    **Tier 3 — deep context (continuity checks, NPC web work, councils — not standard session prep):**
    - Full Decision Log, full session archive, graphify output
 
-   **Locked Constraints (mandatory, output to prep doc):** After loading Tier 2, extract all LOCKED Decision Log entries relevant to the current arc and write them into the prep doc under `## Locked Constraints` before Steps 2–7. Do not propose session content that contradicts these. If a proposed situation, encounter, or NPC interaction conflicts with a locked constraint, flag it immediately and do not proceed until the GM confirms either: (a) the decision has changed (update Decision Log first), or (b) there is no actual contradiction.
+   **Locked Constraints (mandatory, output to prep doc):** After loading Tier 2, extract all LOCKED Decision Log entries relevant to the current arc and write them into the prep doc under `## Locked Constraints`. Then proceed through Steps 2–7 to generate session content. After completing Step 7 (before Step 8), do a single pass: review all generated content against the Locked Constraints list. If any conflict found, flag each one and pause before Step 8. Do not proceed until the GM confirms either: (a) the decision has changed (update Decision Log first), or (b) there is no actual contradiction. A single post-generation gate is cleaner than stopping after each step.
 
    **(Echos campaigns only)** If `OPEN_QUESTIONS.md` exists, load session-blocking items only — entries marked or escalated as “session-blocking” or “S{current+1}-blocker”. List under `## Context Flags` in prep output. Skip file if no such entries exist.
 
@@ -54,7 +56,7 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
 
 4. **Lay out secrets, clues, and leads.** List the **secrets** (truths in the world relevant this session), the **clues** that let players uncover each (with the Three Clue Rule in mind — no single point of failure), and the **leads** that point them onward so they’re never stranded without a next move. Players assemble the sequence; you supply the information. Mind the line between **public belief** and **GM truth**: check `PLAYER_KNOWLEDGE.md` (if it exists — maintained by `dnd-player-knowledge-sync`) so a clue advances them rather than restating what they already have — or accidentally handing over a secret they haven’t earned.
 
-   **Reading PLAYER_KNOWLEDGE.md:** Expect five sections per session block: *NPCs Encountered* table (NPC as known | GM file | what they know | what they don’t | relationship | session), *Locations Visited* table, *Information Learned (Confirmed)* table (fact | source | session), *Rumors & Unverified Leads* table, *Secrets Revealed* list. To check if a clue is redundant: search Information Learned for the fact; if found, redesign the clue to advance further. If file shows `[BOOTSTRAPPED at S{n}]`, knowledge before that session may be missing — for pre-bootstrap content, fall back to searching those session notes directly.
+   **Reading PLAYER_KNOWLEDGE.md:** Expect five sections per session block: *NPCs Encountered* table (NPC as known | GM file | what they know | what they don’t | relationship | session), *Locations Visited* table, *Information Learned (Confirmed)* table (fact | source | session), *Rumors & Unverified Leads* table, *Secrets Revealed* list. To check if a clue is redundant: search Information Learned for the fact; if found, redesign the clue to advance to the next layer of information (not just re-state what’s known). If file shows `[BOOTSTRAPPED at S{n}]`, knowledge before that session may be incomplete — do NOT search the archive (violates Tier 1 budget); instead, note the gap under Context Flags and infer from the loaded Tier 1 sessions only. If a missing fact becomes session-blocking, add to OPEN_THREADS for targeted load next prep cycle.
 
    If `PLAYER_KNOWLEDGE.md` doesn’t exist yet, infer from session notes what the players have seen and heard.
 
