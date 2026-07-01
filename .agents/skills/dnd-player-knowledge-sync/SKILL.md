@@ -125,10 +125,12 @@ File lives at `{Campaign folder}/PLAYER_KNOWLEDGE.md`. Use append-only updates �
 - **Append, never overwrite.** Earlier entries are historical record. If something was wrong, add a `[REVISED S{n}]` note; don't delete.
 - **Flag gaps.** If the session note is ambiguous about whether something was revealed (GM described a detail but it wasn't clear players noticed), flag it with `[UNCLEAR — confirm with GM]` rather than making a call.
 - **Don't extract future prep.** This file is backward-looking (what they know now). Don't include GM plans, upcoming beats, or information the party hasn't received.
-- **Cross-check Decision Log.** If a revealed secret contradicts a LOCKED Decision Log entry, note the discrepancy. Don't resolve it silently.
+- **Cross-check Decision Log.** If a revealed secret contradicts a LOCKED Decision Log entry: (1) flag in PLAYER_KNOWLEDGE.md as `[DISCREPANCY — revealed at table: X, but Decision Log D-{n} says Y]`; (2) add to OPEN_THREADS.md: “Resolve canon discrepancy: Decision Log D-{n} vs Session {m} reveal”; (3) do not resolve silently — the GM must decide whether table canon wins (revise Decision Log entry to REVISED) or the session was misinterpreted.
 
 ## Pairs with
 
 - `dnd-session-recap-loop` — run this after the recap note is written (Step 11)
 - `dnd-session-prep` — reads `PLAYER_KNOWLEDGE.md` in Tier 2 context loading (Step 1 and Step 4)
-- `dnd-continuity-check` — uses `PLAYER_KNOWLEDGE.md` to verify clues don't leak unrevealed secrets
+- `dnd-continuity-check` — uses `PLAYER_KNOWLEDGE.md` to verify clues don’t leak unrevealed secrets
+
+**→ Pipeline continues:** after updating PLAYER_KNOWLEDGE.md, invoke `dnd-faction-clock` to advance all active factions one beat (final step of the Recap pipeline).

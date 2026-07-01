@@ -42,6 +42,7 @@ Entry points: step 1 for raw ideas, the canon-grill step if already grilled+logg
 **Ideation:** dnd-grill → decision-log → dnd-lore-ingestion → dnd-grill *canon mode*.
 
 **Recap:** dnd-session-recap-loop (full post-session close — actual play → NPC loop → front movement → continuity → threads → ranked decisions → next session queue) → **dnd-player-knowledge-sync** (extract player-visible info → update `PLAYER_KNOWLEDGE.md`) → dnd-faction-clock (advance all active factions one beat after session close).
+*Pipeline order rationale: recap-loop writes what happened at the table; player-knowledge-sync captures what players learned from it (boundary: this session only); faction-clock then advances factions off-screen (GM-layer only, after session close). Running faction-clock before player-knowledge-sync would risk off-screen moves leaking into player knowledge.*
 
 **PC Arc:** dnd-pc-arc-builder (map backstory hooks → active fronts, build spotlight schedule) → character-arc (internal transformation, if not yet designed) → dnd-npc-arc-builder (if a backstory NPC needs a revelation arc) → dnd-session-prep (embed scheduled spotlight in prep).
 

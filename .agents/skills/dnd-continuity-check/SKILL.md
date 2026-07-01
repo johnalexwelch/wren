@@ -44,7 +44,7 @@ Classify the review:
 Read in this order when available:
 
 1. Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md`) — CotU entry point; links all live resources. Generic fallback: `CAMPAIGN_MAP.md`.
-2. `Decision Log.md` — LOCKED entries (see `dnd-session-prep` Tier 2 filter strategy). This is the authoritative source for settled decisions. Do not look for `CANON.md` — it was rejected; Decision Log is the source of truth.
+2. `Decision Log.md` — LOCKED entries (see Decision Log filter in dnd-session-prep Step 1 Tier 2). This is the authoritative source for settled decisions. Do not look for `CANON.md` — it was rejected; Decision Log is the source of truth.
 3. `Story So Far.md` (most recent arc chapter, if it exists; CotAS has this, Echos does not)
 4. `PLAYER_KNOWLEDGE.md` (if it exists — maintained by `dnd-player-knowledge-sync`)
 5. `TIMELINE.md`

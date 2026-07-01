@@ -192,6 +192,8 @@ Invoke `dnd-player-knowledge-sync` on the completed session note. This extracts 
 
 If `PLAYER_KNOWLEDGE.md` doesn’t exist yet, follow the bootstrap path in `dnd-player-knowledge-sync` (extract last 2–3 sessions only; mark file as bootstrapped).
 
+**→ Pipeline continues:** after Step 11, invoke `dnd-faction-clock` to advance all active factions one beat. Do not stop at Step 11 if running the full Recap pipeline.
+
 ---
 
 ## Output Format

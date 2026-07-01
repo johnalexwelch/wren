@@ -20,7 +20,7 @@ Lightweight can be *lore-aware*: if a few relevant notes exist, use them as cons
 
 ## Workflow
 
-1. **Gather context (just enough).** Inspect likely sources if they exist — Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md`; fallback `CAMPAIGN_MAP.md`), `Decision Log.md` (LOCKED entries — see `dnd-session-prep` Tier 2 filter strategy; do not look for `CANON.md`), `OPEN_THREADS.md`, `TIMELINE.md`, `PLAYER_KNOWLEDGE.md`, and relevant `npcs/**`, `factions/**`, `locations/**`, `mysteries/**`, `lore/**`. Pull only what sharpens the next question; don't read the whole archive.
+1. **Gather context (just enough).** Inspect likely sources if they exist — Campaign Dashboard (`{Campaign Name} - Campaign Dashboard.md`; fallback `CAMPAIGN_MAP.md`), `Decision Log.md` (LOCKED entries — see Decision Log filter in dnd-session-prep Step 1 Tier 2; do not look for `CANON.md`), `OPEN_THREADS.md`, `TIMELINE.md`, `PLAYER_KNOWLEDGE.md`, and relevant `npcs/**`, `factions/**`, `locations/**`, `mysteries/**`, `lore/**`. Pull only what sharpens the next question; don't read the whole archive.
 2. **Identify the object** (session premise, mystery, NPC, faction move, encounter, location, arc, lore decision) and its primary risks.
 3. **Establish the intended table experience** (tense investigation, political pressure, wonder, horror, tactical danger, emotional payoff, moral dilemma, etc.). If unclear, ask: "What table experience are you aiming for?"
 4. **Interrogate one branch at a time** (Lightweight) or **in batches of five** (Canon), each question in this format:
