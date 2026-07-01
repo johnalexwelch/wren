@@ -5,7 +5,13 @@ Format: `### Q{N} — {Short title}` followed by **Decision**, **Alternatives co
 
 <!-- Add decisions below -->
 
-### Q4 — CANON.md rejected; tiered context loading adopted for session prep
+### Q6 — Cross-campaign world facts: deferred; WORLD_DECISIONS.md approach tracked
+
+**Decision:** Skip for now. The immediate fix is session-prep Tier 2 filtering by NPC/faction names, which will surface cross-campaign-relevant entries if the GM happens to read them. A proper `WORLD_DECISIONS.md` (cross-campaign locked decisions) and per-session cross-grep would be cleaner but requires vault restructuring.
+**Alternatives considered:** Grep other campaign's Decision Log for shared entity names at prep time (fragile, slow); fold cross-campaign facts into each campaign's own Decision Log (duplicates, rots); create `02 World Bible/WORLD_DECISIONS.md` with world-level LOCKED entries (right answer, requires migration work).
+**Tradeoff accepted:** Deferred until a cross-campaign prep failure actually occurs and motivates the migration.
+
+### Q5 — CANON.md rejected; tiered context loading adopted for session prep
 
 **Decision:** Skip CANON.md as a manually-maintained artifact. Root cause of AI re-litigating settled decisions is that `dnd-session-prep` never reads `Decision Log.md` or `Story So Far.md`. Fix the actual gap: add Decision Log (LOCKED entries, filtered by relevance), Story So Far, and Storylines & Fronts (active fronts only) as Tier 2 mandatory reads in session prep. No new file to maintain. CANON.md would have required a sixth manual post-session update, compressed 39.9K of Decision Log to 3-4K with lossy results, and become poisonous when stale.
 **Alternatives considered:** CANON.md as always-read dense summary (Karpathy-style, ~3-4K words) — rejected: maintenance burden, compression loss on long campaigns, staleness worse than no summary; AI-generated CANON.md regenerated each session — plausible but adds latency and creates a derived artifact; RAG/embeddings — overkill for a single-GM creative domain at this scale.
