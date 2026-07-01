@@ -30,7 +30,9 @@ Consumes: user intent, campaign context clues. Produces: routed pipeline executi
 | "ingest", "formalize", "these notes", "from ChatGPT" | **Lore Ingestion** |
 | "grill", "stress test", "poke holes", "challenge" (± canon/docs) | **Grill** |
 
-If ambiguous, ask one question: "Are we building something new, reviewing something existing, or prepping for the table?"
+If ambiguous, ask one question: “Are we building something new, reviewing something existing, or prepping for the table?”
+
+If Recap and Session both apply (user wants to close today’s session AND prep the next), ask: “Should I: (A) close out today’s session first (Recap pipeline), then prep the next one — or (B) skip directly to prep (assuming today’s session is already closed)?”
 
 ## Pipelines
 

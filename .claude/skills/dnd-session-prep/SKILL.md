@@ -40,9 +40,13 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
    **Tier 3 — deep context (continuity checks, NPC web work, councils — not standard session prep):**
    - Full Decision Log, full session archive, graphify output
 
-   **Before proposing any session content**, note what’s off the table: scan the loaded Decision Log entries and briefly list any decisions already locked that are relevant to the current arc. Do not re-open these. If a thread seems to pull toward a locked decision, note the constraint rather than relitigating it.
+   **Locked Constraints (mandatory, output to prep doc):** After loading Tier 2, extract all LOCKED Decision Log entries relevant to the current arc and write them into the prep doc under `## Locked Constraints` before Steps 2–7. Do not propose session content that contradicts these. If a proposed situation, encounter, or NPC interaction conflicts with a locked constraint, flag it immediately and do not proceed until the GM confirms either: (a) the decision has changed (update Decision Log first), or (b) there is no actual contradiction.
 
-   Capture two things explicitly: **what changed last session**, and **what the players said they’d do next.** If a designed situation exists (from `dnd-adventure-design`), start from it. Don't re-read the whole archive.
+   **(Echos campaigns only)** If `OPEN_QUESTIONS.md` exists, load session-blocking items only — entries marked or escalated as “session-blocking” or “S{current+1}-blocker”. List under `## Context Flags` in prep output. Skip file if no such entries exist.
+
+   **Cold start (no prior campaign files):** If none of the Tier 1 files exist, ask: “Is this Session 1?” If yes: ask for the opening situation or PC starting state and use that as sole context; skip session notes and OPEN_THREADS. If no: ask user to provide at least one of: prior session note, Campaign Dashboard, or campaign state summary before proceeding.
+
+   Capture two things explicitly: **what changed last session**, and **what the players said they'd do next.** If a designed situation exists (from `dnd-adventure-design`), start from it. Don't re-read the whole archive.
 
 2. **Set one clear session goal.** Players need to know what they're trying to accomplish, and so do you. Make it achievable, understandable, and measurable — "stop the ritual before the full moon," not "deal with the cult somehow." This anchors pacing: when play drifts, the goal tells you what to reassert.
 
@@ -70,16 +74,24 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
 
 ## Output format
 
-Produce a runnable prep doc. Lead with the goal and what's live; keep beats as situations, not a script.
+Produce a runnable prep doc. Lead with the goal and what’s live; keep beats as situations, not a script.
 
 ```md
 # Session Prep: {session title / date}
 **Session goal:** {achievable, understandable, measurable}
 **Why the party cares:** {emotional anchor / personal stake live this session}
 
+## Locked Constraints
+- D-{n}: {constraint} [prevents: {what this session cannot re-open or contradict}]
+
+## Context Flags
+- [MISSING: {source not found — brief fallback used}]
+- [BOOTSTRAPPED: PLAYER_KNOWLEDGE.md at S{n}; pre-bootstrap knowledge may be incomplete]
+- [SESSION-BLOCKER from OPEN_QUESTIONS: {item}]
+
 ## Where we left off
 - **Changed last session:** …
-- **Players said they'd:** …  → **so I'm prepping:** {the 2–3 likely directions}
+- **Players said they’d:** …  → **so I’m prepping:** {the 2–3 likely directions}
 
 ## Active timers (moving whether or not they act)
 - {Clock} — currently at … → next beat if unchecked …

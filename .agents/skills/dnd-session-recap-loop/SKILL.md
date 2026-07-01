@@ -97,6 +97,8 @@ This pass is a **collaborative conversation with the GM**, not an inference exer
 
 Do not pre-fill the table. Do not infer. Bring the front, ask the question, and build the answer together.
 
+If the user declines engagement for a front (“no updates” / “skip this one”): record `[PASS C DEFERRED: no agenda movement confirmed this session]` for that front and continue. Do not block indefinitely. A deferred entry is valid; an absent entry is not.
+
 **For each active front, ask:**
 
 1. *What are they working on right now, independent of the party?* (Surface their stated agenda from their front doc, then ask what that looks like *this session* specifically.)
@@ -137,7 +139,13 @@ Every active front gets a row. "No movement" is a valid entry — but it must be
 
 ### 6. Run continuity check
 
-Invoke `dnd-review continuity` on the session note and any new canon introduced this session. Surface Critical and High findings before proceeding. Flag link errors (broken NPC links, spelling inconsistencies) even if low severity.
+Invoke `dnd-review continuity` on the session note and any new canon introduced this session.
+
+- **Critical findings:** pause. Do not proceed to Step 7. For each Critical, ask: “Should we address this now, defer to OPEN_THREADS, or override?” Only proceed after GM decision.
+- **High findings:** note them in the recap output. User may address or proceed.
+- **Medium/Low:** log and continue to Step 7.
+
+Flag link errors (broken NPC links, spelling inconsistencies) even if low severity.
 
 ---
 

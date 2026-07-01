@@ -29,9 +29,9 @@ If `PLAYER_KNOWLEDGE.md` doesn’t exist and the campaign has already been runni
 
 When session count is a multiple of 10:
 
-1. **Archive old entries** — move sessions older than 20 back to `PLAYER_KNOWLEDGE_ARCHIVE.md`. Exception: secrets revealed are never archived (always live).
-2. **Mark superseded facts** — if a confirmed fact contradicts an earlier entry, add `[SUPERSEDED S{n}]` to the old entry.
-3. **Consolidate NPC tables** — merge repeated NPC entries into a single cumulative-knowledge row.
+1. **Archive old entries** — move session blocks older than 20 sessions to `PLAYER_KNOWLEDGE_ARCHIVE.md` by appending them there (do not delete from active file yet; move only after confirming archive write succeeded). Exception: secrets revealed blocks are never archived.
+2. **Mark superseded facts** — if a confirmed fact in an older entry contradicts a newer one, append `[SUPERSEDED by S{n}]` to the old entry inline. Do not delete the old entry.
+3. **Consolidate NPC tables** — *this is the only exception to append-only*: add a `[CONSOLIDATED]` summary row for an NPC who appears across 5+ sessions, immediately above the archived blocks. The summary row merges all knowledge to date. Retain original rows in archive for audit trail.
 
 Session-prep Tier 2 loads the active file only; archive is reference-only.
 
@@ -125,7 +125,7 @@ File lives at `{Campaign folder}/PLAYER_KNOWLEDGE.md`. Use append-only updates �
 - **Append, never overwrite.** Earlier entries are historical record. If something was wrong, add a `[REVISED S{n}]` note; don't delete.
 - **Flag gaps.** If the session note is ambiguous about whether something was revealed (GM described a detail but it wasn't clear players noticed), flag it with `[UNCLEAR — confirm with GM]` rather than making a call.
 - **Don't extract future prep.** This file is backward-looking (what they know now). Don't include GM plans, upcoming beats, or information the party hasn't received.
-- **Cross-check Decision Log.** If a revealed secret contradicts a LOCKED Decision Log entry: (1) flag in PLAYER_KNOWLEDGE.md as `[DISCREPANCY — revealed at table: X, but Decision Log D-{n} says Y]`; (2) add to OPEN_THREADS.md: “Resolve canon discrepancy: Decision Log D-{n} vs Session {m} reveal”; (3) do not resolve silently — the GM must decide whether table canon wins (revise Decision Log entry to REVISED) or the session was misinterpreted.
+- **Cross-check Decision Log.** If a revealed secret contradicts a LOCKED Decision Log entry: do NOT write the discrepancy into PLAYER_KNOWLEDGE.md (player-facing file; GM-truth stays out). Instead: (1) add to OPEN_THREADS.md: `[DISCREPANCY] Session {n} revealed {fact}; Decision Log D-{n} says {other fact}. Resolve: table canon wins (revise D-{n}), or session was misinterpreted?`; (2) include in the skill’s final summary output: “[CONTINUITY] {n} discrepancy/ies flagged in OPEN_THREADS”. The GM decides; do not resolve silently.
 
 ## Pairs with
 
