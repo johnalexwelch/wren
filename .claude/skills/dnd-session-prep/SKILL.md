@@ -27,9 +27,13 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
    - `OPEN_THREADS.md` — top active threads
 
    **Tier 2 — filtered reads (read only the relevant slice, not the full file):**
-   - `Decision Log.md` — **LOCKED entries only** (grep for `LOCKED` or `status: locked`). Also grep for NPC/location/faction names that appear in the active threads. This is the primary protection against re-litigating settled decisions — read it before anything else in Tier 2.
-   - `Story So Far.md` (if it exists) — read the most recent arc chapter; skip backstory chapters irrelevant to the current situation
-   - `Storylines & Fronts/` — open the front files for **active fronts only** (skip `(TBD)` entries); check: what's their next scheduled beat, what are they doing right now independent of the party?
+   - `Decision Log.md` — settled decisions only. **Filter strategy (in order):**
+     1. If Decision Log uses status markers, grep for `LOCKED` or `status: locked` — load matching entries
+     2. If no status markers (e.g. Decision Log uses numbered `### DECISION N` headers), grep for NPC/location/faction names from active threads + OPEN_THREADS — load matching entries plus most recent 10–15 entries
+     3. Fallback: load last ~500 lines of the file (most recent decisions)
+     Always load before anything else in Tier 2 — this is the primary guard against re-litigating settled decisions.
+   - **Narrative arc summary** — in order of preference: (a) `Story So Far.md` most recent arc chapter if the file exists; (b) if it doesn’t, read the Front Movement tables from the last 2–3 session notes (shows what’s moved recently); (c) Campaign Dashboard “Current Focus” or “Active Arc” section as minimal orientation. If none exist and campaign is >20 sessions, flag it in the prep output.
+   - `Storylines & Fronts/` — **active fronts only.** Detection in order: (1) skip files with `(TBD)` in filename; (2) for remaining files check frontmatter `status:` field — load `active`/`in-progress`, skip `dormant`/`tbd`/`parked`; (3) fallback: load any front that appears in the last 2–3 sessions’ Front Movement table. For each active front: what’s their next scheduled beat, what are they doing right now independent of the party?
    - `PLAYER_KNOWLEDGE.md` (if it exists — created/updated by `dnd-player-knowledge-sync` after each session) — what the players actually know vs. what exists only in GM notes
    - Relevant `NPCs/`, `Factions/`, `Locations/` files for the threads you're actively prepping
 
@@ -56,7 +60,7 @@ Two schools drive this skill. **The Angry GM** — make players *care*: investme
 
 10. **Prep narration for the key scenes.** For the two or three beats that matter most, prep *actionable* description, not mood-poetry: what exists, what matters, and what players can interact with ("three stone altars, one slick with fresh blood" — not "an old, mysterious room"). Visualize the space first so positions and objects stay consistent. At the table, run resolution as **Declare → Determine → Describe**: the player states an action, you resolve it, you narrate the result — clean and in order.
 
-11. **Close the loop.** End the prep with the **consequences** that are queued: how the world will visibly shift depending on what the players do. After the session, update `TIMELINE.md` / `OPEN_THREADS.md` once outcomes are known (only after the DM confirms). Run `dnd-player-knowledge-sync` to extract what the players saw, heard, and learned into `PLAYER_KNOWLEDGE.md` — this is what keeps Tier 1 context honest next session. For a final pre-table safety check, route to `dnd-review` (agency + continuity).
+11. **Close the loop.** End the prep with the **consequences** that are queued: how the world will visibly shift depending on what the players do. For a final pre-table safety check, route to `dnd-review` (agency + continuity). After the session runs, close it with `dnd-session-recap-loop` — that workflow includes the player knowledge boundary update (`dnd-player-knowledge-sync`) and faction clock advance.
 
 ## Output format
 

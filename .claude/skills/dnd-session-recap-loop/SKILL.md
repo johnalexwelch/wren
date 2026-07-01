@@ -40,6 +40,7 @@ Confirm with the user before writing. If the account is incomplete, ask for the 
 **Name reconciliation (transcripts garble proper nouns):** before treating any name as a new entity, reconcile it against `08 Rules & GM Tools/Name Reconciliation.md` and each candidate note's `aliases:` frontmatter. Clean spelling variants resolve automatically via aliases. For Bucket-2 garbles (e.g. "Helios"→[[Halios Swiftshadow]], "half-orc"/"Valar Gûr"→[[Veylar Auric]]), assume canon only when the role matches and **flag for confirmation — never substitute silently**. Never re-race or rename a built NPC from a transcript.
 
 Key things to pin down:
+
 - What scenes played vs. were skipped
 - Which NPCs were encountered (on-screen)
 - Divergences from the prep doc
@@ -65,6 +66,7 @@ Update the existing session note (or prep doc if no session note exists yet):
 If no post-session session note exists, create one at `Sessions/Session {NNN} - {Title}.md`. If one exists, fill any remaining gaps.
 
 Required sections:
+
 - Frontmatter: `status: played`
 - **What Happened** (actual play, with divergences noted)
 - **Moments** (confirmed table highlights)
@@ -80,10 +82,12 @@ Required sections:
 Loop through every NPC who was active this session — on-screen AND off-screen. Three passes:
 
 **Pass A — Party ↔ NPC (on-screen):**
+
 - What was the interaction?
 - How did it shift the relationship?
 
 **Pass B — NPC ↔ NPC (off-screen):**
+
 - What were key NPCs doing while the party wasn't watching?
 - Did any off-screen interaction shift a relationship, advance a faction, or change available information?
 
@@ -94,6 +98,7 @@ This pass is a **collaborative conversation with the GM**, not an inference exer
 Do not pre-fill the table. Do not infer. Bring the front, ask the question, and build the answer together.
 
 **For each active front, ask:**
+
 1. *What are they working on right now, independent of the party?* (Surface their stated agenda from their front doc, then ask what that looks like *this session* specifically.)
 2. *What concrete action did they take toward that goal?* (Push for specificity — "Keld seeded 3 beads in the Vigil officer corps" not "Keld continued operations.")
 3. *Does this intersect with anything another front is doing?* (This is where storylines weave — Keld's sleeper seeding might cross Vespera's archive operation; Fawks's counter-intelligence might be watching Oswald's cover story.)
@@ -114,6 +119,7 @@ Once the GM has confirmed each entry, write the table:
 ### 5. Front movement review *(do not skip)*
 
 For each active front, answer:
+
 - What moved this session — on-screen and off-screen?
 - What did the party observe or miss?
 - What's the status entering next session?
@@ -180,6 +186,14 @@ Write them into the next session's prep stub or note them in OPEN_THREADS.md.
 
 ---
 
+### 11. Update player knowledge boundary
+
+Invoke `dnd-player-knowledge-sync` on the completed session note. This extracts player-visible information (NPCs encountered, locations visited, confirmed facts, rumors heard, secrets revealed) and appends to `PLAYER_KNOWLEDGE.md`. Run this before the session closes — it guards future session prep from re-delivering earned information or leaking unrevealed secrets.
+
+If `PLAYER_KNOWLEDGE.md` doesn’t exist yet, follow the bootstrap path in `dnd-player-knowledge-sync` (extract last 2–3 sessions only; mark file as bootstrapped).
+
+---
+
 ## Output Format
 
 ```md
@@ -211,8 +225,9 @@ Critical: {n} · High: {n} · Medium: {n}
 ## Rules
 
 - Never skip the NPC interaction loop. Off-screen NPC activity is as important as on-screen.
-- Never skip Pass C (faction agenda work). Inference is not enough — commit to what each active faction *did* this session toward their goal. Vague status notes ("continued operations") are not entries.
-- Never skip the front movement review. Every active front gets a row, even if the entry is "no movement."
+- Never skip Pass C (faction agenda work). Inference is not enough — commit to what each active faction *did* this session toward their goal. Vague status notes (“continued operations”) are not entries.
+- Never skip the front movement review. Every active front gets a row, even if the entry is “no movement.”
+- Never skip Step 11 (player knowledge boundary). Run `dnd-player-knowledge-sync` before closing the session.
 - Do not write the session note until actual play is confirmed by the user.
 - Lock open canon items that are confirmed; carry forward items that are not — never guess.
 - Stack-rank decisions by what they unlock, not by how easy they are to answer.

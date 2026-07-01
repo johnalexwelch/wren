@@ -16,6 +16,25 @@ Maintain the boundary between **GM truth** and **player knowledge**. After each 
 - Any time `PLAYER_KNOWLEDGE.md` is missing or clearly stale (e.g. before a prep session where it would matter)
 - On demand when the GM asks "what do the players know about X?"
 
+## Bootstrap (first-time setup)
+
+If `PLAYER_KNOWLEDGE.md` doesn’t exist and the campaign has already been running:
+
+- **>5 sessions played:** Do not backfill automatically. Create the file with the header structure, extract from the **most recent 2–3 session notes only**, and add this note at the top: `[BOOTSTRAPPED at S{n} — knowledge before this session not captured. Add early-campaign facts manually if prep surfaces them.]` Then add an OPEN_THREADS entry: “Bootstrap PLAYER_KNOWLEDGE — if prep surfaces a known fact from early campaign not in file, add it.”
+- **≤5 sessions played:** Extract all sessions.
+
+**Rationale:** Players already know what they know. This file guards *future* prep, not past. 83 sessions of backfill is error-prone and unnecessary. The bootstrapped marker signals to session-prep that early-campaign knowledge may be missing — fall back to inferring from session notes for pre-bootstrap sessions.
+
+## Maintenance (every 10 sessions)
+
+When session count is a multiple of 10:
+
+1. **Archive old entries** — move sessions older than 20 back to `PLAYER_KNOWLEDGE_ARCHIVE.md`. Exception: secrets revealed are never archived (always live).
+2. **Mark superseded facts** — if a confirmed fact contradicts an earlier entry, add `[SUPERSEDED S{n}]` to the old entry.
+3. **Consolidate NPC tables** — merge repeated NPC entries into a single cumulative-knowledge row.
+
+Session-prep Tier 2 loads the active file only; archive is reference-only.
+
 ## Inputs
 
 1. The session note just written (from `dnd-session-recap-loop`)
