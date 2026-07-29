@@ -5,6 +5,12 @@ Format: `### Q{N} — {Short title}` followed by **Decision**, **Alternatives co
 
 <!-- Add decisions below -->
 
+### Q7 — Wren Workbench chat is a work surface, not fleet chat; bridged to Matrix by session summary <a id="wren-workbench-chorus-fit"></a>
+
+**Decision:** The Wren Workbench (local web app: chat with Wren, vault browse/edit, connections graph) is a hybrid. Its chat is a **work session surface** — the Claude Code pattern with a better face: transcripts are session artifacts; tool calls, file edits, and skill runs stream inline. This sits outside Chorus F9's "no custom chat" rule, which governs *fleet conversation*; that plane is untouched — quick conversational asks to Wren stay on Matrix (`@wren`, Element), and the workbench does not replace or proxy Matrix. The bridge: on session end, Wren posts a short summary (work done, files touched, decisions) to her Matrix room, and the workbench emits standard F13 audit events to `~/.chorus/audit`, preserving Mira's observability. Wren's charter constraint (canon writes require Alex approval) must surface as an approval step in the workbench UI. Wayfinder ticket: [wren#4](https://github.com/johnalexwelch/wren/issues/4).
+**Alternatives considered:** Treat workbench chat as fleet conversation and build it as a Matrix client (F9-pure, but Element/Matrix can't render tool streams, diffs, or skill runs — the actual content of a work session); full transcript mirroring to Matrix (maximum fidelity, but noisy and duplicates the session artifact); audit events only with no Matrix trace (clean, but work sessions become invisible to the fleet conversation record).
+**Tradeoff accepted:** A second conversational surface for Wren exists (workbench + Element), in exchange for a work surface that can actually render agent work; the summary-plus-audit bridge keeps the fleet record whole. The "work surfaces are not chat" interpretation should also be noted fleet-side in chorus's decision log so F9's boundary is written down.
+
 ### Q6 — Cross-campaign world facts: deferred; WORLD_DECISIONS.md approach tracked
 
 **Decision:** Skip for now. The immediate fix is session-prep Tier 2 filtering by NPC/faction names, which will surface cross-campaign-relevant entries if the GM happens to read them. A proper `WORLD_DECISIONS.md` (cross-campaign locked decisions) and per-session cross-grep would be cleaner but requires vault restructuring.
