@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<!--
+  PROTOTYPE — THROWAWAY. Issue #9: Workbench layout prototype.
+  QUESTION: Which pane arrangement makes Warren feel right for planning work?
+    Variant 1: chat-primary   — chat is home; files + graph slide over from the right
+    Variant 2: three-pane     — studio: file tree / editor / chat, all visible
+    Variant 3: graph-home     — graph is the canvas; chat docked; notes peek from nodes
+  Same fake vault fixture rendered three ways. Switch with keys 1-3 or arrows.
+  Delete after decision is captured in issue #9 / decision-log.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warren — layout prototype</title>
+<style>
+  :root {
+    --bg: #16181d; --bg2: #1d2026; --bg3: #23272f; --line: #2e333d;
+    --fg: #d6d9e0; --dim: #8a90a0; --accent: #d4a24e; --accent2: #7aa2f7;
+    --green: #7fb069; --red: #c86a5f; --purple: #a98fd4;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; overflow: hidden; }
+  .variant { display: none; height: 100vh; }
+  .variant.active { display: flex; }
+
+  /* ---------- shared bits ---------- */
+  .topbar { height: 44px; display: flex; align-items: center; gap: 12px; padding: 0 14px;
+            border-bottom: 1px solid var(--line); background: var(--bg2); flex: 0 0 auto; }
+  .brand { font-weight: 700; color: var(--accent); letter-spacing: .04em; }
+  .brand small { color: var(--dim); font-weight: 400; margin-left: 8px; }
+  .pill-btn { background: var(--bg3); border: 1px solid var(--line); color: var(--fg);
+              border-radius: 999px; padding: 4px 12px; font-size: 12px; cursor: pointer; }
+  .pill-btn:hover { border-color: var(--accent); }
+  .spacer { flex: 1; }
+
+  .chat-msg { margin: 14px 0; line-height: 1.5; }
+  .chat-msg .who { font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+  .chat-msg.wren .who { color: var(--accent); }
+  .chat-msg .bubble { background: var(--bg3); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+  .chat-msg.user .bubble { background: #262c3a; }
+  .toolstream { font-family: var(--mono); font-size: 12px; color: var(--dim); background: var(--bg2);
+                border-left: 3px solid var(--accent2); border-radius: 4px; padding: 8px 12px; margin: 8px 0; }
+  .toolstream .t { color: var(--accent2); }
+  .approval { border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 10px 0; background: #221e14; }
+  .approval h4 { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .approval .diff { font-family: var(--mono); font-size: 12px; margin: 8px 0; }
+  .approval .diff .add { color: var(--green); }
+  .approval .actions { display: flex; gap: 8px; margin-top: 8px; }
+  .approval .actions button { border-radius: 6px; border: 1px solid var(--line); padding: 4px 14px; cursor: pointer; font-size: 12px; }
+  .approval .approve { background: var(--green); color: #10130e; border: none; }
+  .approval .reject { background: transparent; color: var(--fg); }
+  .chat-input { border-top: 1px solid var(--line); padding: 12px; flex: 0 0 auto; }
+  .chat-input input { width: 100%; background: var(--bg3); border: 1px solid var(--line); border-radius: 10px;
+                      color: var(--fg); padding: 10px 14px; font-size: 14px; outline: none; }
+  .chat-input input:focus { border-color: var(--accent); }
+
+  .tree { font-size: 13px; line-height: 1.9; padding: 10px 6px; overflow-y: auto; }
+  .tree .dir { color: var(--dim); font-weight: 600; }
+  .tree .file { color: var(--fg); cursor: pointer; padding-left: 4px; border-radius: 4px; }
+  .tree .file:hover { background: var(--bg3); }
+  .tree .file.sel { background: var(--bg3); color: var(--accent); }
+  .tree ul { list-style: none; padding-left: 14px; }
+  .tree > ul { padding-left: 6px; }
+
+  .editor { font-family: var(--mono); font-size: 13px; line-height: 1.6; padding: 18px 22px; overflow-y: auto; white-space: pre-wrap; }
+  .editor .fm { color: var(--dim); }
+  .editor .h { color: var(--accent); font-weight: 700; }
+  .editor .wl { color: var(--accent2); }
+  .stale { background: #3a2b20; border-bottom: 1px solid var(--accent); color: var(--accent);
+           font-size: 12px; padding: 6px 14px; display: flex; gap: 10px; align-items: center; }
+  .stale button { background: var(--accent); border: none; border-radius: 5px; padding: 2px 10px; font-size: 11px; cursor: pointer; }
+
+  svg text { font-family: var(--sans); }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--dim); cursor: pointer; }
+  .chip.on { border-color: var(--accent2); color: var(--accent2); background: #1c2333; }
+
+  /* ---------- variant 1: chat-primary ---------- */
+  #v1 { flex-direction: column; }
+  #v1 .chat-scroll { flex: 1; overflow-y: auto; }
+  #v1 .chat-col { max-width: 780px; margin: 0 auto; padding: 10px 20px 30px; }
+  #v1 .slideover { position: fixed; top: 0; right: 0; bottom: 0; width: 480px; background: var(--bg2);
+                   border-left: 1px solid var(--line); transform: translateX(100%); transition: transform .18s ease;
+                   display: flex; flex-direction: column; z-index: 40; box-shadow: -12px 0 30px rgba(0,0,0,.4); }
+  #v1 .slideover.open { transform: none; }
+  #v1 .so-tabs { display: flex; border-bottom: 1px solid var(--line); }
+  #v1 .so-tabs button { flex: 1; background: none; border: none; color: var(--dim); padding: 10px; cursor: pointer; font-size: 13px; }
+  #v1 .so-tabs button.on { color: var(--accent); border-bottom: 2px solid var(--accent); }
+  #v1 .so-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+  /* ---------- variant 2: three-pane ---------- */
+  #v2 .col-tree { width: 230px; flex: 0 0 auto; border-right: 1px solid var(--line); background: var(--bg2); display: flex; flex-direction: column; }
+  #v2 .col-editor { flex: 1.3; display: flex; flex-direction: column; min-width: 0; }
+  #v2 .col-chat { flex: 1; min-width: 340px; border-left: 1px solid var(--line); display: flex; flex-direction: column; background: var(--bg2); }
+  #v2 .col-chat .chat-scroll { flex: 1; overflow-y: auto; padding: 0 14px; }
+  #v2 .graphbar { height: 160px; flex: 0 0 auto; border-top: 1px solid var(--line); background: var(--bg2); position: relative; }
+  #v2 .graphbar .cap { position: absolute; top: 6px; left: 10px; font-size: 11px; color: var(--dim); }
+  #v2 .pane-head { height: 34px; flex: 0 0 auto; display: flex; align-items: center; padding: 0 12px; font-size: 12px;
+                   color: var(--dim); border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .07em; }
+
+  /* ---------- variant 3: graph-home ---------- */
+  #v3 { flex-direction: column; }
+  #v3 .canvas-wrap { flex: 1; position: relative; overflow: hidden; }
+  #v3 .canvas-wrap svg { width: 100%; height: 100%; }
+  #v3 .filterbar { position: absolute; top: 12px; left: 14px; z-index: 5; background: rgba(29,32,38,.85);
+                   backdrop-filter: blur(6px); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+  #v3 .peek { position: absolute; top: 12px; right: 14px; width: 340px; max-height: 60%; overflow-y: auto; z-index: 5;
+              background: rgba(29,32,38,.94); backdrop-filter: blur(6px); border: 1px solid var(--line); border-radius: 10px; }
+  #v3 .peek .editor { padding: 12px 16px; font-size: 12px; }
+  #v3 .peek .peek-head { padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--accent); display:flex; }
+  #v3 .dock { position: absolute; bottom: 14px; right: 14px; width: 400px; height: 46%; min-height: 260px; z-index: 6;
+              background: rgba(29,32,38,.96); border: 1px solid var(--line); border-radius: 12px; display: flex;
+              flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  #v3 .dock .dock-head { padding: 8px 12px; font-size: 12px; color: var(--accent); border-bottom: 1px solid var(--line); }
+  #v3 .dock .chat-scroll { flex: 1; overflow-y: auto; padding: 0 12px; }
+
+  /* ---------- switcher ---------- */
+  #switcher { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+              background: rgba(20,22,27,.82); backdrop-filter: blur(8px); border: 1px solid var(--line);
+              border-radius: 999px; padding: 6px 14px; display: flex; align-items: center; gap: 10px;
+              font-size: 13px; box-shadow: 0 6px 20px rgba(0,0,0,.45); }
+  #switcher button { background: none; border: none; color: var(--fg); font-size: 15px; cursor: pointer; padding: 2px 6px; }
+  #switcher button:hover { color: var(--accent); }
+  #switcher .num { border: 1px solid var(--line); border-radius: 6px; font-size: 12px; padding: 1px 8px; }
+  #switcher .num.on { border-color: var(--accent); color: var(--accent); }
+  #switcher .label { min-width: 200px; text-align: center; color: var(--dim); }
+  #switcher .label b { color: var(--fg); }
+</style>
+</head>
+<body>
+
+<!-- ============ VARIANT 1: chat-primary ============ -->
+<div class="variant" id="v1">
+  <div class="topbar">
+    <span class="brand">WARREN <small>Chronicles of the Uncrowned King</small></span>
+    <span class="spacer"></span>
+    <button class="pill-btn" onclick="v1open('files')">📁 Files</button>
+    <button class="pill-btn" onclick="v1open('graph')">🕸 Graph</button>
+  </div>
+  <div class="chat-scroll"><div class="chat-col" data-chat></div></div>
+  <div class="chat-input"><div class="chat-col" style="padding:0 20px"><input placeholder="Ask Wren… (⌘K for files, ⌘G for graph)"></div></div>
+  <div class="slideover" id="v1so">
+    <div class="so-tabs">
+      <button id="v1tab-files" onclick="v1open('files')">Files & note</button>
+      <button id="v1tab-graph" onclick="v1open('graph')">Graph</button>
+      <span style="padding:6px 10px; cursor:pointer; color:var(--dim)" onclick="document.getElementById('v1so').classList.remove('open')">✕</span>
+    </div>
+    <div class="so-body" id="v1body"></div>
+  </div>
+</div>
+
+<!-- ============ VARIANT 2: three-pane studio ============ -->
+<div class="variant" id="v2">
+  <div class="col-tree">
+    <div class="pane-head">Vault</div>
+    <div class="tree" data-tree></div>
+  </div>
+  <div class="col-editor">
+    <div class="pane-head">NPCs / Kaelorn.md <span class="spacer"></span><span style="color:var(--dim);text-transform:none">edited 2m ago</span></div>
+    <div class="stale">⚠ Changed on disk while you were editing — <b>reload</b> or keep your buffer <button>Reload</button><button style="background:var(--bg3);color:var(--fg)">Keep mine</button></div>
+    <div class="editor" data-editor></div>
+    <div class="graphbar">
+      <span class="cap">Connections — Kaelorn (neighborhood)</span>
+      <svg data-minigraph viewBox="0 0 900 160" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%"></svg>
+    </div>
+  </div>
+  <div class="col-chat">
+    <div class="pane-head">Wren — work session</div>
+    <div class="chat-scroll" data-chat></div>
+    <div class="chat-input"><input placeholder="Ask Wren…"></div>
+  </div>
+</div>
+
+<!-- ============ VARIANT 3: graph-home ============ -->
+<div class="variant" id="v3">
+  <div class="topbar">
+    <span class="brand">WARREN <small>graph · 525 nodes / 1,838 edges (showing Diadem arc)</small></span>
+    <span class="spacer"></span>
+    <button class="pill-btn">📁 Vault</button>
+  </div>
+  <div class="canvas-wrap">
+    <div class="filterbar">
+      <div class="filters">
+        <span class="chip on">campaign: CotUK</span><span class="chip on">era: current</span>
+        <span class="chip on">NPCs</span><span class="chip on">locations</span><span class="chip">factions</span>
+        <span class="chip">status: dead</span><span class="chip on">visibility: GM</span>
+      </div>
+    </div>
+    <svg data-biggraph viewBox="0 0 1200 700"></svg>
+    <div class="peek" id="v3peek">
+      <div class="peek-head">Kaelorn.md <span class="spacer"></span><span style="color:var(--dim);cursor:pointer" onclick="this.closest('.peek').style.display='none'">✕</span></div>
+      <div class="editor" data-editor></div>
+    </div>
+    <div class="dock">
+      <div class="dock-head">Wren — work session</div>
+      <div class="chat-scroll" data-chat></div>
+      <div class="chat-input"><input placeholder="Ask Wren…"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ switcher ============ -->
+<div id="switcher">
+  <button onclick="cycle(-1)">◀</button>
+  <span class="label" id="swlabel"></span>
+  <button onclick="cycle(1)">▶</button>
+  <span class="num" data-n="1" onclick="show(0)">1</span>
+  <span class="num" data-n="2" onclick="show(1)">2</span>
+  <span class="num" data-n="3" onclick="show(2)">3</span>
+</div>
+
+<script>
+/* ---------- shared fake vault fixture (one fixture, three renderings) ---------- */
+const FIX = {
+  tree: [
+    ["dir","Campaigns/Chronicles of the Uncrowned King"],
+    ["dir","  NPCs"], ["file","    Kaelorn.md", true], ["file","    Maren Voss.md"], ["file","    Veylar.md"], ["file","    Vespera.md"],
+    ["dir","  Locations"], ["file","    Elendar.md"], ["file","    Ciradyl.md"], ["file","    Diadem Garrison.md"],
+    ["dir","  Fronts"], ["file","    Crimson Storm.md"], ["file","    Halios Countdown.md"],
+    ["dir","  Sessions"], ["file","    S084 — Cover Blown.md"], ["file","    S085 — prep.md"],
+  ],
+  note: `<span class="fm">---
+type: npc
+campaign: chronicles-uncrowned-king
+era: current
+status: alive
+disposition: antagonist
+visibility: gm
+---</span>
+<span class="h"># Kaelorn</span>
+
+Spymaster of the <span class="wl">[[Crimson Storm]]</span>, embedded in <span class="wl">[[Elendar]]</span>'s
+Collegium Liminis as a visiting scholar. Cover blown in <span class="wl">[[S084 — Cover Blown]]</span>.
+
+<span class="h">## Relationships</span>
+| With | Status |
+|------|--------|
+| <span class="wl">[[Maren Voss]]</span> | uneasy allies |
+| <span class="wl">[[Veylar]]</span> | hunting |
+
+<span class="h">## Current agenda</span>
+Exfiltrate before the <span class="wl">[[Halios Countdown]]</span> reaches day 0.`,
+  chat: [
+    {who:"Alex", cls:"user", text:"What does Kaelorn do now that his cover is blown?"},
+    {who:"Wren", cls:"wren", text:"His network still has two assets inside the Collegium. Three moves make sense given his agenda — but the boldest one ties into Maren's failing ritual. Let me check the front clocks…", tools:[
+      "Read <span class='t'>Fronts/Crimson Storm.md</span>",
+      "Grep <span class='t'>\"Kaelorn\"</span> in Sessions/ — 6 hits",
+      "index.query <span class='t'>neighbors(Kaelorn, depth=1)</span>"
+    ]},
+    {who:"Wren", cls:"wren", text:"Crimson Storm's clock sits at 4/6. If Kaelorn burns an asset to cover his exfil, the clock jumps — and Maren inherits the blame. Draft update below.", approval:{
+      file:"Fronts/Crimson Storm.md",
+      add:'+ clock: 5/6 — Kaelorn burns the archivist asset to escape Elendar'
+    }},
+  ],
+  nodes: [
+    {id:"Kaelorn",     x:600,y:330, t:"npc", c:"#c86a5f"},
+    {id:"Maren Voss",  x:430,y:220, t:"npc", c:"#c86a5f"},
+    {id:"Veylar",      x:780,y:230, t:"npc", c:"#7fb069"},
+    {id:"Vespera",     x:830,y:430, t:"npc", c:"#7fb069"},
+    {id:"Elendar",     x:420,y:440, t:"loc", c:"#7aa2f7"},
+    {id:"Ciradyl",     x:250,y:340, t:"loc", c:"#7aa2f7"},
+    {id:"Diadem Garrison",x:640,y:540,t:"loc", c:"#7aa2f7"},
+    {id:"Crimson Storm",x:300,y:140, t:"faction", c:"#a98fd4"},
+    {id:"Collegium Liminis",x:560,y:130,t:"faction", c:"#a98fd4"},
+  ],
+  edges: [
+    ["Kaelorn","Maren Voss","uneasy allies"],
+    ["Kaelorn","Veylar","hunting"],
+    ["Kaelorn","Crimson Storm","spymaster of"],
+    ["Kaelorn","Collegium Liminis","infiltrated"],
+    ["Kaelorn","Elendar","hiding in"],
+    ["Maren Voss","Crimson Storm","lieutenant"],
+    ["Veylar","Diadem Garrison","garrisoned at"],
+    ["Vespera","Veylar","travels with"],
+    ["Elendar","Ciradyl","sibling capital"],
+    ["Vespera","Diadem Garrison",""],
+  ],
+};
+
+/* ---------- shared renderers ---------- */
+function renderChat(el, compact=false) {
+  el.innerHTML = FIX.chat.map(m => {
+    let h = `<div class="chat-msg ${m.cls}"><div class="who">${m.who}</div><div class="bubble">${m.text}</div>`;
+    if (m.tools) h += `<div class="toolstream">${m.tools.map(t=>"▸ "+t).join("<br>")}</div>`;
+    if (m.approval) h += `<div class="approval"><h4>Canon write — needs your approval</h4>
+      <div style="font-size:12px;color:var(--dim)">${m.approval.file}</div>
+      <div class="diff"><span class="add">${m.approval.add}</span></div>
+      <div class="actions"><button class="approve">Approve</button><button class="reject">Reject</button></div></div>`;
+    return h + `</div>`;
+  }).join("");
+}
+function renderTree(el) {
+  el.innerHTML = "<ul>" + FIX.tree.map(([kind, label, sel]) => {
+    const depth = (label.match(/^ */)[0].length / 2);
+    return `<li style="padding-left:${depth*12}px" class="${kind}${sel?' sel':''}">${kind==='dir'?'▾ ':''}${label.trim()}</li>`;
+  }).join("") + "</ul>";
+}
+function renderEditor(el) { el.innerHTML = FIX.note; }
+function renderGraph(svg, {scaleY=1, labels=true, nodeR=14, fontSize=12} = {}) {
+  const N = Object.fromEntries(FIX.nodes.map(n=>[n.id,n]));
+  let h = "";
+  for (const [a,b,label] of FIX.edges) {
+    const p=N[a], q=N[b];
+    const x1=p.x, y1=p.y*scaleY, x2=q.x, y2=q.y*scaleY;
+    h += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${label?'#4a5164':'#333947'}" stroke-width="${label?1.6:1}" ${label?'':'stroke-dasharray="3 4"'}/>`;
+    if (label && labels) h += `<text x="${(x1+x2)/2}" y="${(y1+y2)/2 - 4}" fill="#8a90a0" font-size="${fontSize-2}" text-anchor="middle">${label}</text>`;
+  }
+  for (const n of FIX.nodes) {
+    h += `<circle cx="${n.x}" cy="${n.y*scaleY}" r="${nodeR}" fill="${n.c}" fill-opacity=".85" stroke="#16181d" stroke-width="2" style="cursor:pointer"/>`;
+    if (labels) h += `<text x="${n.x}" y="${n.y*scaleY + nodeR + 13}" fill="#d6d9e0" font-size="${fontSize}" text-anchor="middle">${n.id}</text>`;
+  }
+  svg.innerHTML = h;
+}
+
+/* ---------- variant 1 slide-over ---------- */
+function v1open(tab) {
+  const so = document.getElementById('v1so');
+  so.classList.add('open');
+  document.getElementById('v1tab-files').className = tab==='files' ? 'on' : '';
+  document.getElementById('v1tab-graph').className = tab==='graph' ? 'on' : '';
+  const body = document.getElementById('v1body');
+  if (tab === 'files') {
+    body.innerHTML = `<div style="display:flex;height:100%"><div class="tree" style="width:190px;border-right:1px solid var(--line);flex:0 0 auto"></div><div class="editor" style="flex:1"></div></div>`;
+    renderTree(body.querySelector('.tree')); renderEditor(body.querySelector('.editor'));
+  } else {
+    body.innerHTML = `<div class="filterbar" style="padding:10px 12px;border-bottom:1px solid var(--line)"><div class="filters">
+      <span class="chip on">era: current</span><span class="chip on">NPCs</span><span class="chip on">locations</span><span class="chip">factions</span></div></div>
+      <svg viewBox="140 60 800 560" style="flex:1"></svg>`;
+    renderGraph(body.querySelector('svg'), {nodeR:12, fontSize:12});
+  }
+}
+
+/* ---------- boot ---------- */
+document.querySelectorAll('[data-chat]').forEach(el => renderChat(el));
+document.querySelectorAll('[data-tree]').forEach(el => renderTree(el));
+document.querySelectorAll('[data-editor]').forEach(el => renderEditor(el));
+renderGraph(document.querySelector('[data-minigraph]'), {scaleY:0.24, labels:false, nodeR:7});
+renderGraph(document.querySelector('[data-biggraph]'));
+
+/* ---------- switcher ---------- */
+const NAMES = ["chat-primary","three-pane-studio","graph-home"];
+let cur = 0;
+function show(i) {
+  cur = (i + 3) % 3;
+  document.querySelectorAll('.variant').forEach((v,k) => v.classList.toggle('active', k===cur));
+  document.querySelectorAll('#switcher .num').forEach((n,k) => n.classList.toggle('on', k===cur));
+  document.getElementById('swlabel').innerHTML = `${cur+1} / 3: <b>${NAMES[cur]}</b>`;
+  history.replaceState(null,"",`?variant=${cur+1}`);
+}
+function cycle(d) { show(cur + d); }
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key >= '1' && e.key <= '3') show(+e.key - 1);
+  if (e.key === 'ArrowLeft') cycle(-1);
+  if (e.key === 'ArrowRight') cycle(1);
+});
+show((new URLSearchParams(location.search).get('variant') || 1) - 1);
+</script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<!--
+  PROTOTYPE — THROWAWAY. Issue #9, round 2.
+  DECIDED so far: three-pane-studio layout won (tree / editor / chat), markdown rendered formatted.
+  QUESTION: What format lets Alex actually DIVE INTO connections from the current note?
+    Variant 1: focus-graph   — click a node to re-center the neighborhood on it (hop-by-hop)
+    Variant 2: linked-panel  — Obsidian-style typed backlinks: grouped, clickable lists
+    Variant 3: rel-table     — flat relationship table, filter + click-through
+  All three sit in the same slot under the editor. Keys 1-3 / arrows to switch.
+  Clicking any entity ANYWHERE (wiki link, node, row) refocuses the whole connections area.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warren — connections format prototype</title>
+<style>
+  :root {
+    --bg: #16181d; --bg2: #1d2026; --bg3: #23272f; --line: #2e333d;
+    --fg: #d6d9e0; --dim: #8a90a0; --accent: #d4a24e; --accent2: #7aa2f7;
+    --green: #7fb069; --red: #c86a5f; --purple: #a98fd4;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; overflow: hidden;
+         display: flex; height: 100vh; }
+
+  .col-tree { width: 220px; flex: 0 0 auto; border-right: 1px solid var(--line); background: var(--bg2); display: flex; flex-direction: column; }
+  .col-editor { flex: 1.35; display: flex; flex-direction: column; min-width: 0; }
+  .col-chat { flex: 1; min-width: 330px; border-left: 1px solid var(--line); display: flex; flex-direction: column; background: var(--bg2); }
+  .pane-head { height: 34px; flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 12px;
+               color: var(--dim); border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .07em; }
+  .spacer { flex: 1; }
+
+  .tree { font-size: 13px; line-height: 1.9; padding: 10px 6px; overflow-y: auto; }
+  .tree .dir { color: var(--dim); font-weight: 600; }
+  .tree .file { color: var(--fg); cursor: pointer; padding-left: 4px; border-radius: 4px; }
+  .tree .file:hover { background: var(--bg3); }
+  .tree .file.sel { background: var(--bg3); color: var(--accent); }
+  .tree ul { list-style: none; padding-left: 0; }
+
+  /* formatted markdown */
+  .note { flex: 1; overflow-y: auto; padding: 20px 28px; line-height: 1.6; }
+  .note h1 { font-size: 24px; color: var(--fg); margin: 4px 0 12px; }
+  .note h2 { font-size: 15px; color: var(--accent); margin: 20px 0 8px; text-transform: uppercase; letter-spacing: .05em; }
+  .note p { margin: 8px 0; }
+  .note .props { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .note .props span { font-size: 11px; font-family: var(--mono); background: var(--bg3); border: 1px solid var(--line);
+                      border-radius: 5px; padding: 2px 8px; color: var(--dim); }
+  .note .props span b { color: var(--fg); font-weight: 500; }
+  .note table { border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+  .note td, .note th { border: 1px solid var(--line); padding: 5px 12px; text-align: left; }
+  .note th { color: var(--dim); font-weight: 600; background: var(--bg2); }
+  .wl { color: var(--accent2); cursor: pointer; border-bottom: 1px dotted #44507a; }
+  .wl:hover { color: #a9c0ff; }
+
+  /* connections slot */
+  .conn { height: 240px; flex: 0 0 auto; border-top: 1px solid var(--line); background: var(--bg2);
+          display: flex; flex-direction: column; position: relative; }
+  .conn-head { padding: 6px 12px; font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .07em;
+               display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--line); }
+  .conn-head b { color: var(--accent); }
+  .conn-body { flex: 1; overflow: hidden; display: none; }
+  .conn-body.active { display: flex; }
+
+  /* v1 focus-graph */
+  #cg svg { width: 100%; height: 100%; }
+  #cg .hint { position: absolute; bottom: 8px; left: 12px; font-size: 11px; color: var(--dim); }
+
+  /* v2 linked-panel */
+  #cp { overflow-y: auto; padding: 10px 16px; gap: 24px; }
+  #cp .grp { min-width: 200px; }
+  #cp .grp h5 { font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+  #cp .grp .row { padding: 4px 8px; border-radius: 6px; cursor: pointer; display: flex; gap: 8px; align-items: baseline; font-size: 13px; }
+  #cp .grp .row:hover { background: var(--bg3); }
+  #cp .grp .row .lbl { color: var(--dim); font-size: 11px; font-style: italic; }
+  #cp .grp .row .ctx { color: var(--dim); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 260px; }
+
+  /* v3 rel-table */
+  #ct { overflow-y: auto; padding: 0; flex-direction: column; }
+  #ct table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  #ct th { position: sticky; top: 0; background: var(--bg3); color: var(--dim); text-align: left; padding: 6px 12px;
+           font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  #ct td { padding: 5px 12px; border-top: 1px solid var(--line); }
+  #ct tr:hover td { background: var(--bg3); cursor: pointer; }
+  #ct .tag { font-size: 10px; border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; color: var(--dim); }
+  #ct .src { color: var(--dim); font-size: 11px; }
+
+  /* chat */
+  .chat-scroll { flex: 1; overflow-y: auto; padding: 0 14px; }
+  .chat-msg { margin: 14px 0; line-height: 1.5; }
+  .chat-msg .who { font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+  .chat-msg.wren .who { color: var(--accent); }
+  .chat-msg .bubble { background: var(--bg3); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+  .chat-msg.user .bubble { background: #262c3a; }
+  .toolstream { font-family: var(--mono); font-size: 12px; color: var(--dim); background: var(--bg2);
+                border-left: 3px solid var(--accent2); border-radius: 4px; padding: 8px 12px; margin: 8px 0; }
+  .toolstream .t { color: var(--accent2); }
+  .approval { border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 10px 0; background: #221e14; }
+  .approval h4 { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+  .approval .diff { font-family: var(--mono); font-size: 12px; margin: 8px 0; color: var(--green); }
+  .approval .actions { display: flex; gap: 8px; margin-top: 8px; }
+  .approval .actions button { border-radius: 6px; border: 1px solid var(--line); padding: 4px 14px; cursor: pointer; font-size: 12px; }
+  .approval .approve { background: var(--green); color: #10130e; border: none; }
+  .approval .reject { background: transparent; color: var(--fg); }
+  .chat-input { border-top: 1px solid var(--line); padding: 12px; flex: 0 0 auto; }
+  .chat-input input { width: 100%; background: var(--bg3); border: 1px solid var(--line); border-radius: 10px;
+                      color: var(--fg); padding: 10px 14px; font-size: 14px; outline: none; }
+
+  /* switcher */
+  #switcher { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+              background: rgba(20,22,27,.85); backdrop-filter: blur(8px); border: 1px solid var(--line);
+              border-radius: 999px; padding: 6px 14px; display: flex; align-items: center; gap: 10px;
+              font-size: 13px; box-shadow: 0 6px 20px rgba(0,0,0,.45); }
+  #switcher button { background: none; border: none; color: var(--fg); font-size: 15px; cursor: pointer; padding: 2px 6px; }
+  #switcher .num { border: 1px solid var(--line); border-radius: 6px; font-size: 12px; padding: 1px 8px; cursor: pointer; }
+  #switcher .num.on { border-color: var(--accent); color: var(--accent); }
+  #switcher .label { min-width: 170px; text-align: center; color: var(--dim); }
+  #switcher .label b { color: var(--fg); }
+</style>
+</head>
+<body>
+
+<div class="col-tree">
+  <div class="pane-head">Vault</div>
+  <div class="tree" id="tree"></div>
+</div>
+
+<div class="col-editor">
+  <div class="pane-head"><span id="crumb">NPCs / Kaelorn.md</span><span class="spacer"></span>
+    <span style="text-transform:none">rendered · <span style="color:var(--accent2);cursor:pointer">edit source</span></span></div>
+  <div class="note" id="note"></div>
+  <div class="conn">
+    <div class="conn-head">Connections — <b id="connfocus">Kaelorn</b>
+      <span class="spacer"></span><span id="connmeta"></span>
+      <button id="launchgraph" style="background:var(--bg3);border:1px solid var(--line);color:var(--accent2);border-radius:6px;padding:2px 10px;font-size:11px;cursor:pointer">⤢ open graph</button></div>
+    <div class="conn-body" id="cg"><svg id="cgsvg" viewBox="0 0 900 200"></svg><span class="hint">click a node to dive into its neighborhood · click center to open the note</span></div>
+    <div class="conn-body" id="cp"></div>
+    <div class="conn-body" id="ct"></div>
+  </div>
+</div>
+
+<div class="col-chat">
+  <div class="pane-head">Wren — work session</div>
+  <div class="chat-scroll" id="chat"></div>
+  <div class="chat-input"><input placeholder="Ask Wren…"></div>
+</div>
+
+<div id="overlay" style="display:none;position:fixed;inset:0;z-index:90;background:rgba(16,18,23,.97);flex-direction:column">
+  <div style="height:44px;display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid var(--line)">
+    <span style="color:var(--accent);font-weight:700">CONNECTIONS GRAPH</span>
+    <span style="color:var(--dim);font-size:12px">full network · sigma.js in the real app (this is a sketch)</span>
+    <div class="filters" style="margin-left:16px">
+      <span class="chip on">era: current</span><span class="chip on">NPCs</span><span class="chip on">locations</span>
+      <span class="chip on">factions</span><span class="chip">sessions</span><span class="chip on">visibility: GM</span>
+    </div>
+    <span class="spacer"></span>
+    <span style="color:var(--dim);font-size:12px;cursor:pointer" onclick="closeOverlay()">esc / ✕ close</span>
+  </div>
+  <svg id="ovsvg" viewBox="0 0 1200 640" style="flex:1"></svg>
+</div>
+
+<div id="switcher">
+  <button onclick="cycle(-1)">◀</button>
+  <span class="label" id="swlabel"></span>
+  <button onclick="cycle(1)">▶</button>
+  <span class="num" onclick="show(0)">1</span>
+  <span class="num" onclick="show(1)">2</span>
+  <span class="num" onclick="show(2)">3</span>
+</div>
+
+<script>
+/* ---------- fixture: richer entity web so diving actually goes somewhere ---------- */
+const ENT = {
+  "Kaelorn":        {type:"npc", c:"#c86a5f", dir:"NPCs", props:{era:"current",status:"alive",disposition:"antagonist",visibility:"gm"},
+    body:`<p>Spymaster of the <a class="wl" data-e="Crimson Storm">Crimson Storm</a>, embedded in <a class="wl" data-e="Elendar">Elendar</a>'s <a class="wl" data-e="Collegium Liminis">Collegium Liminis</a> as a visiting scholar. Cover blown in <a class="wl" data-e="S084 — Cover Blown">S084</a>.</p>
+    <h2>Relationships</h2><table><tr><th>With</th><th>Status</th></tr>
+    <tr><td><a class="wl" data-e="Maren Voss">Maren Voss</a></td><td>uneasy allies</td></tr>
+    <tr><td><a class="wl" data-e="Veylar">Veylar</a></td><td>hunting</td></tr></table>
+    <h2>Current agenda</h2><p>Exfiltrate before the <a class="wl" data-e="Halios Countdown">Halios Countdown</a> reaches day 0.</p>`},
+  "Maren Voss":     {type:"npc", c:"#c86a5f", dir:"NPCs", props:{era:"current",status:"alive",disposition:"antagonist",visibility:"gm"},
+    body:`<p>Lieutenant of the <a class="wl" data-e="Crimson Storm">Crimson Storm</a>. Her binding ritual beneath <a class="wl" data-e="Ciradyl">Ciradyl</a> is failing; she suspects <a class="wl" data-e="Kaelorn">Kaelorn</a> will leave her holding the blame.</p>`},
+  "Veylar":         {type:"npc", c:"#7fb069", dir:"NPCs", props:{era:"current",status:"alive",disposition:"ally",visibility:"player"},
+    body:`<p>Ranger garrisoned at the <a class="wl" data-e="Diadem Garrison">Diadem Garrison</a>; lost a memory-bead in <a class="wl" data-e="S083 — Into the Diadem">S083</a>. Travels with <a class="wl" data-e="Vespera">Vespera</a>. Currently hunting <a class="wl" data-e="Kaelorn">Kaelorn</a>.</p>`},
+  "Vespera":        {type:"npc", c:"#7fb069", dir:"NPCs", props:{era:"current",status:"alive",disposition:"ally",visibility:"player"},
+    body:`<p>Tiefling with a cracked memory. Travels with <a class="wl" data-e="Veylar">Veylar</a>; drawn to the <a class="wl" data-e="Diadem Garrison">Diadem Garrison</a>'s sealed lower floor.</p>`},
+  "Elendar":        {type:"loc", c:"#7aa2f7", dir:"Locations", props:{era:"current",visibility:"player"},
+    body:`<p>Rome-like capital on the Western Sea; sibling capital to <a class="wl" data-e="Ciradyl">Ciradyl</a>. Seat of the <a class="wl" data-e="Collegium Liminis">Collegium Liminis</a>.</p>`},
+  "Ciradyl":        {type:"loc", c:"#7aa2f7", dir:"Locations", props:{era:"current",visibility:"player"},
+    body:`<p>Paris-like capital north of <a class="wl" data-e="Elendar">Elendar</a>. <a class="wl" data-e="Maren Voss">Maren Voss</a>'s ritual site lies beneath its undercroft.</p>`},
+  "Diadem Garrison":{type:"loc", c:"#7aa2f7", dir:"Locations", props:{era:"current",visibility:"player"},
+    body:`<p>Three floors, twenty-four keyed rooms. <a class="wl" data-e="Veylar">Veylar</a> is garrisoned here; the lower floor is sealed.</p>`},
+  "Crimson Storm":  {type:"faction", c:"#a98fd4", dir:"Fronts", props:{era:"current",clock:"4/6",visibility:"gm"},
+    body:`<p>Front. Spymaster <a class="wl" data-e="Kaelorn">Kaelorn</a>, lieutenant <a class="wl" data-e="Maren Voss">Maren Voss</a>. Clock at 4/6.</p>`},
+  "Collegium Liminis":{type:"faction", c:"#a98fd4", dir:"Fronts", props:{era:"current",visibility:"player"},
+    body:`<p>Priesthood keeping the Porta Liminis gate in <a class="wl" data-e="Elendar">Elendar</a>. Infiltrated by <a class="wl" data-e="Kaelorn">Kaelorn</a>.</p>`},
+  "Halios Countdown":{type:"faction", c:"#a98fd4", dir:"Fronts", props:{era:"current",clock:"day 3",visibility:"gm"},
+    body:`<p>Front clock: day 3. When it hits day 0, <a class="wl" data-e="Kaelorn">Kaelorn</a>'s escape window closes.</p>`},
+  "S084 — Cover Blown":{type:"session", c:"#8a90a0", dir:"Sessions", props:{era:"current",visibility:"gm"},
+    body:`<p>Session note. <a class="wl" data-e="Kaelorn">Kaelorn</a>'s cover blown; <a class="wl" data-e="Maren Voss">Maren Voss</a>'s ritual falters.</p>`},
+  "S083 — Into the Diadem":{type:"session", c:"#8a90a0", dir:"Sessions", props:{era:"current",visibility:"gm"},
+    body:`<p>Session note. The party breaches the <a class="wl" data-e="Diadem Garrison">Diadem Garrison</a>; <a class="wl" data-e="Veylar">Veylar</a> loses his memory-bead.</p>`},
+};
+/* [a, b, label, source-layer] — label may be "", layer: ledger | table | link */
+const EDGES = [
+  ["Kaelorn","Maren Voss","uneasy allies","ledger"],
+  ["Kaelorn","Veylar","hunting","ledger"],
+  ["Kaelorn","Crimson Storm","spymaster of","table"],
+  ["Kaelorn","Collegium Liminis","infiltrated","table"],
+  ["Kaelorn","Elendar","hiding in","table"],
+  ["Kaelorn","Halios Countdown","racing","table"],
+  ["Kaelorn","S084 — Cover Blown","","link"],
+  ["Maren Voss","Crimson Storm","lieutenant","table"],
+  ["Maren Voss","Ciradyl","ritual beneath","table"],
+  ["Maren Voss","S084 — Cover Blown","","link"],
+  ["Veylar","Diadem Garrison","garrisoned at","table"],
+  ["Veylar","Vespera","travels with","ledger"],
+  ["Veylar","S083 — Into the Diadem","","link"],
+  ["Vespera","Diadem Garrison","drawn to","table"],
+  ["Elendar","Ciradyl","sibling capital","table"],
+  ["Elendar","Collegium Liminis","seat of","table"],
+  ["Diadem Garrison","S083 — Into the Diadem","","link"],
+];
+const CHAT = [
+  {who:"Alex", cls:"user", text:"What does Kaelorn do now that his cover is blown?"},
+  {who:"Wren", cls:"wren", text:"His network still has two assets inside the Collegium. Let me check the front clocks…", tools:[
+    "Read <span class='t'>Fronts/Crimson Storm.md</span>",
+    "index.query <span class='t'>neighbors(Kaelorn, depth=1)</span>"]},
+  {who:"Wren", cls:"wren", text:"Crimson Storm sits at 4/6. If Kaelorn burns an asset to cover his exfil, the clock jumps — and Maren inherits the blame.", approval:{
+    file:"Fronts/Crimson Storm.md", add:"+ clock: 5/6 — Kaelorn burns the archivist asset to escape Elendar"}},
+];
+
+let focus = "Kaelorn";
+const neighbors = id => EDGES.filter(e => e[0]===id || e[1]===id)
+  .map(e => ({other: e[0]===id ? e[1] : e[0], label: e[2], layer: e[3]}));
+
+/* ---------- panes ---------- */
+function renderTree() {
+  const dirs = {};
+  for (const [id,e] of Object.entries(ENT)) (dirs[e.dir] ??= []).push(id);
+  document.getElementById('tree').innerHTML = "<ul>" + Object.entries(dirs).map(([d, ids]) =>
+    `<li class="dir">▾ ${d}</li>` + ids.map(id =>
+      `<li class="file${id===focus?' sel':''}" data-e="${id}" style="padding-left:14px">${id}.md</li>`).join("")
+  ).join("") + "</ul>";
+}
+function renderNote() {
+  const e = ENT[focus];
+  document.getElementById('crumb').textContent = `${e.dir} / ${focus}.md`;
+  document.getElementById('note').innerHTML =
+    `<div class="props"><span>type <b>${e.type}</b></span>` +
+    Object.entries(e.props).map(([k,v]) => `<span>${k} <b>${v}</b></span>`).join("") +
+    `</div><h1>${focus}</h1>` + e.body;
+}
+
+/* v1: focus-graph — center node + ring of neighbors, click to re-center */
+function renderFocusGraph() {
+  const ns = neighbors(focus);
+  const cx = 450, cy = 100, Rx = 330, Ry = 62;
+  let h = "";
+  ns.forEach((n, i) => {
+    const a = (i / ns.length) * 2 * Math.PI - Math.PI/2;
+    const x = cx + Math.cos(a) * Rx, y = cy + Math.sin(a) * Ry;
+    n.x = x; n.y = y;
+    h += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${n.label?'#4a5164':'#333947'}" ${n.label?'':'stroke-dasharray="3 4"'}/>`;
+    if (n.label) h += `<text x="${(cx+x)/2}" y="${(cy+y)/2 - 4}" fill="#8a90a0" font-size="9.5" text-anchor="middle">${n.label}</text>`;
+  });
+  ns.forEach(n => {
+    const e = ENT[n.other];
+    h += `<g class="gnode" data-e="${n.other}" style="cursor:pointer">
+      <circle cx="${n.x}" cy="${n.y}" r="10" fill="${e.c}" fill-opacity=".85" stroke="#16181d" stroke-width="2"/>
+      <text x="${n.x}" y="${n.y + 22}" fill="#d6d9e0" font-size="10.5" text-anchor="middle">${n.other}</text></g>`;
+  });
+  h += `<g class="gnode" data-e="${focus}" style="cursor:pointer">
+    <circle cx="${cx}" cy="${cy}" r="15" fill="${ENT[focus].c}" stroke="#d4a24e" stroke-width="2.5"/>
+    <text x="${cx}" y="${cy - 22}" fill="#d4a24e" font-size="12" font-weight="700" text-anchor="middle">${focus}</text></g>`;
+  document.getElementById('cgsvg').innerHTML = h;
+}
+
+/* v2: linked-panel — typed backlink groups */
+function renderPanel() {
+  const ns = neighbors(focus);
+  const grps = { "Relationships (ledger + tables)": ns.filter(n=>n.label), "Wiki links & mentions": ns.filter(n=>!n.label) };
+  document.getElementById('cp').innerHTML = Object.entries(grps).map(([g, list]) =>
+    `<div class="grp"><h5>${g} · ${list.length}</h5>` + list.map(n =>
+      `<div class="row" data-e="${n.other}"><span class="wl" style="border:none">${n.other}</span>
+       ${n.label?`<span class="lbl">${n.label}</span>`:`<span class="ctx">…mentioned in ${n.other.startsWith("S0")?"session note":"note body"}…</span>`}</div>`).join("") + `</div>`
+  ).join("");
+}
+
+/* v3: rel-table */
+function renderTable() {
+  const ns = neighbors(focus);
+  document.getElementById('ct').innerHTML =
+    `<table><tr><th>Entity</th><th>Relationship</th><th>Type</th><th>Source</th></tr>` +
+    ns.map(n => { const e = ENT[n.other]; return `<tr data-e="${n.other}">
+      <td><span class="wl" style="border:none">${n.other}</span></td>
+      <td>${n.label || '<span class="src">wiki link</span>'}</td>
+      <td><span class="tag" style="color:${e.c};border-color:${e.c}55">${e.type}</span></td>
+      <td class="src">${n.layer}</td></tr>`; }).join("") + `</table>`;
+}
+
+function renderChatPane() {
+  document.getElementById('chat').innerHTML = CHAT.map(m => {
+    let h = `<div class="chat-msg ${m.cls}"><div class="who">${m.who}</div><div class="bubble">${m.text}</div>`;
+    if (m.tools) h += `<div class="toolstream">${m.tools.map(t=>"▸ "+t).join("<br>")}</div>`;
+    if (m.approval) h += `<div class="approval"><h4>Canon write — needs your approval</h4>
+      <div style="font-size:12px;color:var(--dim)">${m.approval.file}</div><div class="diff">${m.approval.add}</div>
+      <div class="actions"><button class="approve">Approve</button><button class="reject">Reject</button></div></div>`;
+    return h + `</div>`;
+  }).join("");
+}
+
+function refocus(id) {
+  if (!ENT[id]) return;
+  focus = id;
+  renderTree(); renderNote(); renderFocusGraph(); renderPanel(); renderTable();
+  document.getElementById('connfocus').textContent = focus;
+  document.getElementById('connmeta').textContent = `${neighbors(focus).length} connections`;
+}
+
+/* full-network overlay (launched from the connections header) */
+function renderOverlay() {
+  const ids = Object.keys(ENT);
+  const cx = 600, cy = 320, Rx = 470, Ry = 240;
+  const pos = {};
+  ids.forEach((id, i) => {
+    const a = (i / ids.length) * 2 * Math.PI - Math.PI/2;
+    pos[id] = { x: cx + Math.cos(a) * Rx * (id===focus?0:1), y: cy + Math.sin(a) * Ry * (id===focus?0:1) };
+  });
+  let h = "";
+  for (const [a,b,label] of EDGES) {
+    const p = pos[a], q = pos[b];
+    h += `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${label?'#4a5164':'#333947'}" ${label?'':'stroke-dasharray="3 4"'}/>`;
+    if (label) h += `<text x="${(p.x+q.x)/2}" y="${(p.y+q.y)/2 - 4}" fill="#8a90a0" font-size="10" text-anchor="middle">${label}</text>`;
+  }
+  for (const id of ids) {
+    const e = ENT[id], p = pos[id], isF = id===focus;
+    h += `<g data-e="${id}" style="cursor:pointer">
+      <circle cx="${p.x}" cy="${p.y}" r="${isF?18:13}" fill="${e.c}" fill-opacity=".9" stroke="${isF?'#d4a24e':'#16181d'}" stroke-width="${isF?3:2}"/>
+      <text x="${p.x}" y="${p.y + (isF?34:27)}" fill="${isF?'#d4a24e':'#d6d9e0'}" font-size="${isF?13:11.5}" ${isF?'font-weight="700"':''} text-anchor="middle">${id}</text></g>`;
+  }
+  document.getElementById('ovsvg').innerHTML = h;
+}
+function openOverlay() { renderOverlay(); document.getElementById('overlay').style.display = 'flex'; }
+function closeOverlay() { document.getElementById('overlay').style.display = 'none'; }
+document.getElementById('launchgraph').addEventListener('click', e => { e.stopPropagation(); openOverlay(); });
+
+/* one delegated click handler: any [data-e] anywhere refocuses */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-e]');
+  if (t) {
+    refocus(t.dataset.e);
+    if (document.getElementById('overlay').style.display === 'flex') renderOverlay();
+  }
+});
+
+/* ---------- switcher ---------- */
+const NAMES = ["focus-graph","linked-panel","rel-table"], IDS = ["cg","cp","ct"];
+let cur = 0;
+function show(i) {
+  cur = (i + 3) % 3;
+  IDS.forEach((id,k) => document.getElementById(id).classList.toggle('active', k===cur));
+  document.querySelectorAll('#switcher .num').forEach((n,k) => n.classList.toggle('on', k===cur));
+  document.getElementById('swlabel').innerHTML = `${cur+1} / 3: <b>${NAMES[cur]}</b>`;
+  history.replaceState(null,"",`?variant=${cur+1}`);
+}
+function cycle(d) { show(cur + d); }
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'Escape') closeOverlay();
+  if (e.key >= '1' && e.key <= '3') show(+e.key - 1);
+  if (e.key === 'ArrowLeft') cycle(-1);
+  if (e.key === 'ArrowRight') cycle(1);
+});
+
+renderChatPane(); refocus("Kaelorn");
+show((new URLSearchParams(location.search).get('variant') || 1) - 1);
+</script>
+</body>
+</html>
