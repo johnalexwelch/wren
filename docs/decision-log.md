@@ -5,6 +5,18 @@ Format: `### Q{N} — {Short title}` followed by **Decision**, **Alternatives co
 
 <!-- Add decisions below -->
 
+### Q20 — Warren's client assets route serves no document types and denies framing <a id="warren-assets-posture"></a>
+
+**Decision:** `GET /assets/*` — the route that will serve Warren's PRD 3 client bundle — is hardened by **removing document types from what it can serve at all**, rather than by constraining what a served document may do. Decided with Alex 2026-08-01, closing [awelch/warren#60](http://127.0.0.1:3000/awelch/warren/issues/60) as part of PRD 3 slice 1 rather than as standalone backend debt.
+
+Three parts: (1) the `/assets/*` MIME allowlist narrows to **JavaScript, CSS, fonts, and raster images** — `.html` and `.svg` are refused, not sandboxed; (2) the route gains `X-Frame-Options: DENY` and `frame-ancestors 'none'`, reaching parity with `GET /`; (3) a restrictive `default-src 'none'` ships as defense in depth, and a regression test asserts all three so a later edit to `http-server.ts` cannot silently drop them the way the original gap went unnoticed until review.
+
+The reasoning is that `/assets/*` has no legitimate need to serve a document. Verified against `src/server/http-server.ts`: the shell document is served by `GET /`, which already carries a full nonce'd CSP (`default-src 'none'`, `script-src 'nonce-…'`, `frame-ancestors 'none'`) specifically so the bearer token in `location.hash` cannot be exfiltrated. `/assets/*` is Host-gated with no bearer (same posture as `/`) and, before this decision, sent only `X-Content-Type-Options: nosniff` while serving `.html`, `.js`, and `.svg` with their real executable MIME types. Since the bundle needs only scripts, styles, fonts, and images, refusing document types removes the attack class instead of trying to contain it — a same-origin SVG is a scriptable document, which makes it a token-theft vector against exactly the page holding the token.
+
+**Alternatives considered:** Mirroring `/api/file`'s `default-src 'none'; sandbox` — rejected because `sandbox` is calibrated for *untrusted vault content*, whereas `/assets/*` serves trusted first-party build output, and `sandbox` would break legitimate bundle needs: Q11 runs ForceAtlas2 in a Web Worker, so this would likely have surfaced as a failure in PRD 3 slice 10 rather than at decision time. Frame headers only (add `X-Frame-Options`/`frame-ancestors`, leave the MIME allowlist untouched) — closes the clickjacking gap with the smallest diff, rejected because it leaves the scriptable-SVG token-theft vector reachable. Deferring the call into slice 1 to decide against the real bundle — offered and declined; the bundle's needs are already known from Q11 and Q18 and did not require an artifact to settle.
+
+**Tradeoff accepted:** Any future need to serve an HTML or SVG asset from the bundle requires revisiting this decision rather than just adding a file — and inline SVG icons must ship as components or raster fallbacks instead of fetched assets — in exchange for a route that cannot serve a scriptable same-origin document at all, framing parity with the shell document, and a posture held down by a regression test rather than by reviewer memory.
+
 ### Q19 — Warren browser surfaces: human-write undo is real, image auth keeps Origin, multi-tab stays undefined <a id="warren-browser-surfaces"></a>
 
 **Decision:** Five decisions taken 2026-07-31 while decomposing PRD 42 (browser-facing server surfaces) into slices. Three were Alex's; two were judgment calls made under his standing direction to build the planned V1 through.
