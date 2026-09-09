@@ -163,8 +163,8 @@ Any durable document that describes the world: lore entries, faction sheets, loc
 
 ## Architecture
 
-Wren is a `claude-agent` type repo. Alex opens her via Claude Code (`claude ~/projects/agents/wren`). She has direct file access to the Obsidian vault and reads/writes campaign files in place — the vault is the source of truth, not Wren's repo.
+Wren runs as the Hermes profile `wren` with `~/projects/agents/wren` as its working directory. She has direct file access to the Obsidian vault and reads/writes campaign files in place — the vault is the source of truth, not Wren's repo.
 
-Skills in `.claude/skills/` are loaded on demand via the `Skill` tool. Support libraries (`council-scaffolding`, `graph-first`, `_personas/`) remain global in `~/.claude/skills/`.
+Hermes loads the repository-owned skills in `.agents/skills/` after the repository has been trusted with `hermes -p wren skills trust ~/projects/agents/wren`. The legacy `.claude/skills/` copies remain for rollback during migration but are not the Hermes source.
 
-Session memory is managed by Claude Code auto-memory at `~/.claude/projects/<path>/memory/MEMORY.md`. Wren's `memory/` directory holds persistent campaign state summaries.
+Hermes profile sessions and memory live under `~/.hermes/profiles/wren/`. Wren's repository `memory/` directory continues to hold persistent campaign state summaries.

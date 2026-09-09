@@ -53,15 +53,15 @@ Facts worth having on hand that aren't easily found in the vault — terminology
 
 ## Tier 2 — Session Memory Pointer
 
-Claude Code auto-memory lives outside this repo. It is managed automatically by Claude Code across sessions and captures cross-session learnings, decisions, and agent directives.
+Hermes session and memory state lives outside this repo. It is managed by the `wren` profile and captures cross-session learnings, decisions, and runtime history.
 
 Session memory path:
 
 ```
-~/.claude/projects/<repo-path>/memory/MEMORY.md
+~/.hermes/profiles/wren/
 ```
 
-Do not commit session memory — it is machine-managed and user-local.
+Do not commit profile state — sessions, memory, credentials, and runtime databases are machine-managed and user-local.
 
 ---
 

@@ -3,15 +3,15 @@
   "cora_template": "v1",
   "name": "wren",
   "full_name": "Wonder, Research, Exploration & Narrative",
-  "type": "claude-agent",
+  "type": "hermes-profile",
   "ci_provider": "github",
   "memory_layout": {
     "in_repo": "memory/README.md describes schema; subdirectories are agent-specific",
-    "session": "~/.claude/projects/<path>/memory/MEMORY.md managed by Claude Code auto-memory"
+    "session": "~/.hermes/profiles/wren/state.db managed by Hermes"
   },
 
   "required_files": [
-    "CLAUDE.md",
+    "AGENTS.md",
     "CONTEXT.md",
     "README.md",
     ".pre-commit-config.yaml",

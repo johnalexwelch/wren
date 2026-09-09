@@ -2,9 +2,9 @@
 
 ## Done
 
-- Identity and persona (`AGENTS.md`) — Wonder, Research, Exploration & Narrative
+- Profile identity (`~/.hermes/profiles/wren/SOUL.md`) with repository workflow guidance in `AGENTS.md`
 - Domain vocabulary and vault conventions (`CONTEXT.md`)
-- 24 DnD/narrative/creative writing skills in `.claude/skills/`
+- 34 DnD/narrative/creative writing skills in `.agents/skills/`, available to trusted Hermes sessions
 - Vault wired — Chronicles of the Uncrowned King, both campaigns documented
 - Memory schema (`memory/README.md`)
 - `vault-nav` + `vault-write` skills — CotU-specific vault navigation and write-back
